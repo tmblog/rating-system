@@ -2,9 +2,9 @@
 Contributors: VortexThemes, AlexAlexandru
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
-Requires at least: 4.2.4
+Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,9 @@ notices
 >
 
 == Changelog ==
+
+= 1.1 = 
+* Wordpress 4.1 compatibility
 
 = 1.0 =
 * First release.
