@@ -16,6 +16,17 @@
 				nonce: vortex_ajax_var.nonce
 			},
 			success: function(response){
+				
+				function rating_system_add_new(){
+					if(jQuery('#rating-system-limit').length){
+						var limit = jQuery('#rating-system-limit').val();
+						var avaible = jQuery('.rating-system-list li').length;
+						if(avaible == limit){
+							return false;
+						}else return true;
+					}
+				}
+				
 				if(jQuery('.post-like-counter.'+id).length && jQuery('.post-like-text.'+id).length){
 					var counter = jQuery('.post-like-counter.'+id);
 					counter.text(response.likes);
@@ -31,9 +42,9 @@
 				}
 				if(response.likes == '0' && jQuery('li.'+id).length){
 					jQuery('li.'+id).remove();
-				}else if(!jQuery('li.'+id).length && jQuery('.widget_vortex_top_likes').length && !jQuery('.no-like').length  && !jQuery('.post-like-counter.'+id).length && !jQuery('.post-like-text.'+id).length ){
+				}else if(!jQuery('li.'+id).length && jQuery('.widget_vortex_top_likes').length && !jQuery('.no-like').length  && !jQuery('.post-like-counter.'+id).length && !jQuery('.post-like-text.'+id).length && !response.likes == '0' && rating_system_add_new() ){
 					jQuery('.widget_vortex_top_likes > ul').append('<li class="'+response.id+'"><a href="'+response.url+'" title="'+response.title+'">'+response.title+'</a><span class="post-like-counter '+response.id+'">'+" "+''+response.likes+'</span><span class="post-like-text">'+' '+response.singular+'</span></li>');
-				}else if(!jQuery('li.'+id).length && jQuery('.widget_vortex_top_likes').length && jQuery('.no-like').length  && !jQuery('.post-like-counter.'+id).length && !jQuery('.post-like-text.'+id).length ){
+				}else if(!jQuery('li.'+id).length && jQuery('.widget_vortex_top_likes').length && jQuery('.no-like').length  && !jQuery('.post-like-counter.'+id).length && !jQuery('.post-like-text.'+id).length && !response.likes == '0' && rating_system_add_new()){
 					jQuery('.widget_vortex_top_likes > ul').append('<li class="'+response.id+'"><a href="'+response.url+'" title="'+response.title+'">'+response.title+'</a></li>');
 				}
 				

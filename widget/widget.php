@@ -51,7 +51,8 @@ class vortex_top_likes extends WP_Widget {
 		<?php if ( $title ) {
 			echo $args['before_title'] . esc_html($title) . $args['after_title'];
 		} ?>
-		<ul>
+		<ul class="rating-system-list">
+		<input id="rating-system-limit" type="hidden" value="<?php echo esc_attr($number) ?>" >
 		<?php while ( $r->have_posts() ) : $r->the_post(); ?>
 			<?php  $current_likes = get_post_meta(get_the_ID(),'vortex_system_likes',true);
 				if($current_likes >= '1'):
