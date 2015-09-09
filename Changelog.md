@@ -1,3 +1,5 @@
+## [1.4] 
+### Fix upload
 ## [1.3] 
 ### Fix posts being added to widget area with 0 likes
 ### Fix posts being added to widget area above the limit of the widget display

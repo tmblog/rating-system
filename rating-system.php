@@ -3,7 +3,7 @@
 * Plugin Name: Rating System
 * Plugin URI: http://github.com/VortexThemes/rating-system
 * Description: The simple way to add like or dislike buttons.
-* Version: 1.3
+* Version: 1.4
 * Author: VortexThemes
 * Author URI: https://github.com/VortexThemes
 * License: GPL2
