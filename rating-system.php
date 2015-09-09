@@ -117,13 +117,14 @@ function vortex_register_plugin() {
 function vortex_systen_main_function(){
 	if(function_exists('is_plugin_active')){
 		if ( is_plugin_active( 'redux-framework/redux-framework.php' ) ) {
-			load_plugin_textdomain( 'vortex_system_ld', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );	
-			
-			if ( !class_exists( 'ReduxFramework' ) && file_exists( dirname(dirname(__FILE__)).'/redux-framework/ReduxCore/framework.php' ) ) {
-				require_once( dirname(dirname(__FILE__)).'/redux-framework/ReduxCore/framework.php' );
+			load_plugin_textdomain( 'vortex_system_ld', FALSE, plugin_dir_path( __FILE__ ). 'languages' );
+			$reduxoption = plugin_dir_path( __FILE__).'admin/vortexlikedislike.php';
+			$reduxframework = plugin_dir_path(plugin_dir_path( __FILE__ )).'redux-framework/ReduxCore/framework.php';
+			if ( !class_exists( 'ReduxFramework' ) && file_exists($reduxframework) ) {
+				require_once($reduxframework);
 			};
-			if ( !isset( $vortex_like_dislike ) && file_exists( dirname( __FILE__ ) . '/admin/vortex-like-dislike.php' ) ) {
-				require_once( plugin_dir_path( __FILE__ ) . '/admin/vortex-like-dislike.php' );
+			if ( !isset( $vortex_like_dislike ) && file_exists($reduxoption) ) {
+				require_once($reduxoption);
 			};
 			//donation button
 			function vortex_system_donation_button(){
