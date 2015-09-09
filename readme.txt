@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,11 @@ notices
 >
 
 == Changelog ==
+
+= 1.3 = 
+* Fix posts being added to widget area with 0 likes
+* Fix posts being added to widget area above the limit of the widget display
+* Fix option panel not working
 
 = 1.2 = 
 * Added plugin icon
