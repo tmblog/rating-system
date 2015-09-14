@@ -658,22 +658,24 @@ global $vortex_like_dislike;
 		}
 
 		global $vortex_like_dislike;
-		if($vortex_like_dislike['v_button_visibility'][1] && $vortex_like_dislike['v_button_visibility'][2] ){
-			add_filter('the_content','vortex_system_before_post');
-			add_filter('the_content','vortex_system_after_post');
-			if($vortex_like_dislike['v_enable_bbpress'] && is_plugin_active( 'bbpress/bbpress.php' )){
-				add_filter('bbp_get_reply_content','vortex_system_before_post');
-				add_filter('bbp_get_reply_content','vortex_system_after_post');
-			}
-		}elseif($vortex_like_dislike['v_button_visibility'][1]){
-			add_filter('the_content','vortex_system_before_post');
-			if($vortex_like_dislike['v_enable_bbpress'] && is_plugin_active( 'bbpress/bbpress.php' )){
-				add_filter('bbp_get_reply_content','vortex_system_before_post');
-			}
-		}elseif($vortex_like_dislike['v_button_visibility'][2]){
-			add_filter('the_content','vortex_system_after_post');
-			if($vortex_like_dislike['v_enable_bbpress'] && is_plugin_active( 'bbpress/bbpress.php' )){
-				add_filter('bbp_get_reply_content','vortex_system_after_post');
+		if(!post_password_required()){
+			if($vortex_like_dislike['v_button_visibility'][1] && $vortex_like_dislike['v_button_visibility'][2] ){
+				add_filter('the_content','vortex_system_before_post');
+				add_filter('the_content','vortex_system_after_post');
+				if($vortex_like_dislike['v_enable_bbpress'] && is_plugin_active( 'bbpress/bbpress.php' )){
+					add_filter('bbp_get_reply_content','vortex_system_before_post');
+					add_filter('bbp_get_reply_content','vortex_system_after_post');
+				}
+			}elseif($vortex_like_dislike['v_button_visibility'][1]){
+				add_filter('the_content','vortex_system_before_post');
+				if($vortex_like_dislike['v_enable_bbpress'] && is_plugin_active( 'bbpress/bbpress.php' )){
+					add_filter('bbp_get_reply_content','vortex_system_before_post');
+				}
+			}elseif($vortex_like_dislike['v_button_visibility'][2]){
+				add_filter('the_content','vortex_system_after_post');
+				if($vortex_like_dislike['v_enable_bbpress'] && is_plugin_active( 'bbpress/bbpress.php' )){
+					add_filter('bbp_get_reply_content','vortex_system_after_post');
+				}
 			}
 		}
 		

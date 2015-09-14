@@ -1,3 +1,15 @@
+## [1.8] 
+### Fix translation not working.
+### Updated the .pot file.
+### Changed error handling from fatal error to warning.
+### Removed .temp file.
+##[1.7]
+### Fix rendering on password protected posts.
+### Added option to exclude sticky posts from most liked widget.
+## [1.6]
+### Fix widgets not working after 1.5 update.
+## [1.5] 
+### Fix options panel not working.Huge thanks to [AzzePis](https://wordpress.org/support/profile/azzepis) for letting me test on his/her website.
 ## [1.4] 
 ### Fix upload
 ## [1.3] 

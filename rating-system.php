@@ -3,7 +3,7 @@
 * Plugin Name: Rating System
 * Plugin URI: http://github.com/VortexThemes/rating-system
 * Description: The simple way to add like or dislike buttons.
-* Version: 1.4
+* Version: 1.8
 * Author: VortexThemes
 * Author URI: https://github.com/VortexThemes
 * License: GPL2
@@ -14,9 +14,9 @@
 if ( ! defined( 'ABSPATH' ) ) exit;//exit if accessed directly
 
 //activation hook
-require_once(plugin_dir_path( __FILE__ ).'activation.php');
+include(plugin_dir_path( __FILE__ ).'activation.php');
 //tgmpa
-require_once(plugin_dir_path( __FILE__).'tgmpa/class-tgm-plugin-activation.php');
+include(plugin_dir_path( __FILE__).'tgmpa/class-tgm-plugin-activation.php');
 add_action( 'tgmpa_register', 'vortex_register_plugin' );
 function vortex_register_plugin() {
 
@@ -117,14 +117,14 @@ function vortex_register_plugin() {
 function vortex_systen_main_function(){
 	if(function_exists('is_plugin_active')){
 		if ( is_plugin_active( 'redux-framework/redux-framework.php' ) ) {
-			load_plugin_textdomain( 'vortex_system_ld', FALSE, plugin_dir_path( __FILE__ ). 'languages' );
+			load_plugin_textdomain( 'vortex_system_ld', FALSE, basename(plugin_dir_path( __FILE__ )). '/languages' );
 			$reduxoption = plugin_dir_path( __FILE__).'admin/vortexlikedislike.php';
 			$reduxframework = plugin_dir_path(plugin_dir_path( __FILE__ )).'redux-framework/ReduxCore/framework.php';
 			if ( !class_exists( 'ReduxFramework' ) && file_exists($reduxframework) ) {
-				require_once($reduxframework);
+				include($reduxframework);
 			};
 			if ( !isset( $vortex_like_dislike ) && file_exists($reduxoption) ) {
-				require_once($reduxoption);
+				include($reduxoption);
 			};
 			//donation button
 			function vortex_system_donation_button(){
@@ -142,15 +142,13 @@ function vortex_systen_main_function(){
 			Redux::init('vortex_like_dislike');
 			
 			global $vortex_like_dislike;
-			require_once( plugin_dir_path( __FILE__ ).'/widget/widget.php' );
-			require_once( plugin_dir_path( __FILE__ ).'/widget/dashboard-widget.php' );
-			
+
 			if($vortex_like_dislike['v-switch-posts'] && isset($vortex_like_dislike['v-switch-posts'])){
-				require_once(plugin_dir_path( __FILE__ ).'posts-pages.php');
+				include(plugin_dir_path( __FILE__ ).'posts-pages.php');
 			}
 			
 			if($vortex_like_dislike['v-switch-comments'] && isset($vortex_like_dislike['v-switch-comments'])){
-				require_once(plugin_dir_path( __FILE__ ).'comments.php');
+				include(plugin_dir_path( __FILE__ ).'comments.php');
 			}
 			
 			//add custom fields when comment is submited
@@ -192,4 +190,14 @@ function vortex_systen_main_function(){
 	}
 }
 
-add_action('plugins_loaded','vortex_systen_main_function');
+add_action('wp_loaded','vortex_systen_main_function');
+
+function rating_system_load_widgets(){
+	$widget = plugin_dir_path( __FILE__ ).'widget/widget.php';
+	$dashboardwidget = plugin_dir_path( __FILE__ ).'widget/dashboard-widget.php';
+	if(file_exists($widget) && file_exists($dashboardwidget)){
+		include( $widget );
+		include( $dashboardwidget );
+	}
+}
+add_action('plugins_loaded','rating_system_load_widgets');

@@ -26,6 +26,8 @@ class vortex_top_likes extends WP_Widget {
 		
 		$show_like = isset( $instance['show_like'] ) ? $instance['show_like'] : false;
 		
+		$show_sticky = isset( $instance['show_sticky'] ) ? $instance['show_sticky'] : false;
+		
 		$show_thumbnail = isset( $instance['show_thumbnail'] ) ? $instance['show_thumbnail'] : false;
 		
 		$title = ( ! empty( $instance['title'] ) ) ? $instance['title'] : __( 'Most liked posts','vortex_system_ld');
@@ -42,7 +44,10 @@ class vortex_top_likes extends WP_Widget {
 			'posts_per_page'	=> $number
 
 		);
-		
+		if(!$show_sticky){
+			$query_args['post__not_in'] = get_option("sticky_posts");
+		}
+
 		$r = new WP_Query( $query_args );
 		
 		if ($r->have_posts()) :
@@ -109,17 +114,19 @@ class vortex_top_likes extends WP_Widget {
 		$title  = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 		$show_like = isset( $instance['show_like'] ) ? (bool) $instance['show_like'] : false;
+		$show_sticky = isset( $instance['show_sticky'] ) ? (bool) $instance['show_sticky'] : false;
 		$show_thumbnail = isset( $instance['show_thumbnail'] ) ? (bool) $instance['show_thumbnail'] : false;
 		?>
 				<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:',$domain ); ?></label>
 				<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" /></p>
-
 				<p><label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of posts to show:',$domain ); ?></label>
 				<input id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo $number; ?>" size="3" /></p>
 				<p><input class="checkbox" type="checkbox" <?php checked( $show_thumbnail ); ?> id="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>" name="<?php echo $this->get_field_name( 'show_thumbnail' ); ?>" />
 				<label for="<?php echo $this->get_field_id( 'show_thumbnail' ); ?>"><?php _e( 'Display the thumbnail for each post?',$domain ); ?></label></p>
 				<p><input class="checkbox" type="checkbox" <?php checked( $show_like ); ?> id="<?php echo $this->get_field_id( 'show_like' ); ?>" name="<?php echo $this->get_field_name( 'show_like' ); ?>" />
 				<label for="<?php echo $this->get_field_id( 'show_like' ); ?>"><?php _e( 'Display the likes(counter) for each post?',$domain ); ?></label></p>
+				<p><input class="checkbox" type="checkbox" <?php checked( $show_sticky ); ?> id="<?php echo $this->get_field_id( 'show_sticky' ); ?>" name="<?php echo $this->get_field_name( 'show_sticky' ); ?>" />
+				<label for="<?php echo $this->get_field_id( 'show_sticky' ); ?>"><?php _e( 'Display sticky posts?',$domain ); ?></label></p>
 		<?php
 	}
 	public function update( $new_instance, $old_instance ) {
@@ -127,6 +134,7 @@ class vortex_top_likes extends WP_Widget {
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['number'] = absint( $new_instance['number'] );
 		$instance['show_like'] = isset( $new_instance['show_like'] ) ? (bool) $new_instance['show_like'] : false;
+		$instance['show_sticky'] = isset( $new_instance['show_sticky'] ) ? (bool) $new_instance['show_sticky'] : false;
 		$instance['show_thumbnail'] = isset( $new_instance['show_thumbnail'] ) ? (bool) $new_instance['show_thumbnail'] : false;
 		$this->flush_widget_cache();
 
