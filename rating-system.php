@@ -3,7 +3,7 @@
 * Plugin Name: Rating System
 * Plugin URI: http://github.com/VortexThemes/rating-system
 * Description: The simple way to add like or dislike buttons.
-* Version: 1.8
+* Version: 1.9
 * Author: VortexThemes
 * Author URI: https://github.com/VortexThemes
 * License: GPL2
@@ -112,82 +112,85 @@ function vortex_register_plugin() {
 
 	tgmpa( $plugins, $config );
 }
-
 //require all usefull stuffs
 function vortex_systen_main_function(){
-	if(function_exists('is_plugin_active')){
-		if ( is_plugin_active( 'redux-framework/redux-framework.php' ) ) {
+	
+		if(!is_admin){
+			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+	
+		if(is_plugin_active('redux-framework/redux-framework.php')){
 			load_plugin_textdomain( 'vortex_system_ld', FALSE, basename(plugin_dir_path( __FILE__ )). '/languages' );
 			$reduxoption = plugin_dir_path( __FILE__).'admin/vortexlikedislike.php';
 			$reduxframework = plugin_dir_path(plugin_dir_path( __FILE__ )).'redux-framework/ReduxCore/framework.php';
-			if ( !class_exists( 'ReduxFramework' ) && file_exists($reduxframework) ) {
-				include($reduxframework);
-			};
-			if ( !isset( $vortex_like_dislike ) && file_exists($reduxoption) ) {
-				include($reduxoption);
-			};
-			//donation button
-			function vortex_system_donation_button(){
-				echo '<form style="width:260px;margin:0 auto;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-					<input type="hidden" name="cmd" value="_s-xclick">
-					<input type="hidden" name="hosted_button_id" value="VVGFFVJSFVZ7S">
-					<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-					</form>
-					';
-			}
-			add_action('redux/vortex_like_dislike/panel/before','vortex_system_donation_button');
-			add_action('redux/vortex_like_dislike/panel/after','vortex_system_donation_button');
+		
+				if ( !class_exists( 'ReduxFramework' ) && file_exists($reduxframework) ) {
+					include($reduxframework);
+				};
+				if ( !isset( $vortex_like_dislike ) && file_exists($reduxoption) ) {
+					include($reduxoption);
+				};
+				//donation button
+				function vortex_system_donation_button(){
+					echo '<form style="width:260px;margin:0 auto;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+						<input type="hidden" name="cmd" value="_s-xclick">
+						<input type="hidden" name="hosted_button_id" value="VVGFFVJSFVZ7S">
+						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+						</form>
+						';
+				}
+				add_action('redux/vortex_like_dislike/panel/before','vortex_system_donation_button');
+				add_action('redux/vortex_like_dislike/panel/after','vortex_system_donation_button');
 				
-			Redux::init('vortex_like_dislike');
-			
-			global $vortex_like_dislike;
-
-			if($vortex_like_dislike['v-switch-posts'] && isset($vortex_like_dislike['v-switch-posts'])){
-				include(plugin_dir_path( __FILE__ ).'posts-pages.php');
-			}
-			
-			if($vortex_like_dislike['v-switch-comments'] && isset($vortex_like_dislike['v-switch-comments'])){
-				include(plugin_dir_path( __FILE__ ).'comments.php');
-			}
-			
-			//add custom fields when comment is submited
-			add_action('comment_post', 'vortex_system_add_likes_dislikes_comments');
-			function vortex_system_add_likes_dislikes_comments($comment_ID) {
+				Redux::init('vortex_like_dislike');
+				
 				global $vortex_like_dislike;
-				$likes = 0;
-				$dislikes = 0;
-				
-				if(isset($vortex_like_dislike['v_start_comment_like'])){
-					$likes = $vortex_like_dislike['v_start_comment_like'];
-				}
-				
-				if(isset($vortex_like_dislike['v_start_comment_dislike'])){
-					$dislikes = $vortex_like_dislike['v_start_comment_dislike'];
-				}
-				add_comment_meta($comment_ID, 'vortex_system_likes', $likes, true);
-				add_comment_meta($comment_ID, 'vortex_system_dislikes', $dislikes, true);
-			}
 
-			//add custom fields when post is published
-			add_action( 'publish_post', 'post_published_notification' );
-			function post_published_notification( $ID ) {
-				global $vortex_like_dislike;
-				$likes = 0;
-				$dislikes = 0;
-				
-				if(isset($vortex_like_dislike['v_start_post_like'])){
-					$likes = $vortex_like_dislike['v_start_post_like'];
+				if($vortex_like_dislike['v-switch-posts'] && isset($vortex_like_dislike['v-switch-posts'])){
+					include(plugin_dir_path( __FILE__ ).'posts-pages.php');
 				}
 				
-				if(isset($vortex_like_dislike['v_start_post_dislike'])){
-					$dislikes = $vortex_like_dislike['v_start_post_dislike'];
+				if($vortex_like_dislike['v-switch-comments'] && isset($vortex_like_dislike['v-switch-comments'])){
+					include(plugin_dir_path( __FILE__ ).'comments.php');
 				}
-				add_post_meta($ID, 'vortex_system_likes', $likes, true);
-				add_post_meta($ID, 'vortex_system_dislikes', $dislikes, true);
+				
+				//add custom fields when comment is submited
+				add_action('comment_post', 'vortex_system_add_likes_dislikes_comments');
+				function vortex_system_add_likes_dislikes_comments($comment_ID) {
+					global $vortex_like_dislike;
+					$likes = 0;
+					$dislikes = 0;
+					
+					if(isset($vortex_like_dislike['v_start_comment_like'])){
+						$likes = $vortex_like_dislike['v_start_comment_like'];
+					}
+					
+					if(isset($vortex_like_dislike['v_start_comment_dislike'])){
+						$dislikes = $vortex_like_dislike['v_start_comment_dislike'];
+					}
+					add_comment_meta($comment_ID, 'vortex_system_likes', $likes, true);
+					add_comment_meta($comment_ID, 'vortex_system_dislikes', $dislikes, true);
+				}
+
+				//add custom fields when post is published
+				add_action( 'publish_post', 'post_published_notification' );
+				function post_published_notification( $ID ) {
+					global $vortex_like_dislike;
+					$likes = 0;
+					$dislikes = 0;
+					
+					if(isset($vortex_like_dislike['v_start_post_like'])){
+						$likes = $vortex_like_dislike['v_start_post_like'];
+					}
+					
+					if(isset($vortex_like_dislike['v_start_post_dislike'])){
+						$dislikes = $vortex_like_dislike['v_start_post_dislike'];
+					}
+					add_post_meta($ID, 'vortex_system_likes', $likes, true);
+					add_post_meta($ID, 'vortex_system_dislikes', $dislikes, true);
+				}
 			}
-		}
-	}
 }
 
 add_action('wp_loaded','vortex_systen_main_function');

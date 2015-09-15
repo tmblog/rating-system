@@ -1,3 +1,8 @@
+## [1.9] 
+### Fix undefined variable.
+### Fix options from posts affected by options from comments.
+### Fix buttons not showing.
+### Minor performance improvement.
 ## [1.8] 
 ### Fix translation not working.
 ### Updated the .pot file.

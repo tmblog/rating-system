@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 1.8
+Stable tag: 1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,12 @@ notices
 >
 
 == Changelog ==
+= 1.9 = 
+* Fix undefined variable.
+* Fix options from posts affected by options from comments.
+* Fix buttons not showing.
+* Minor performance improvement.
+
 = 1.8 = 
 * Fix translation not working.
 * Updated the .pot file.

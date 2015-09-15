@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-14 16:10+0300\n"
+"POT-Creation-Date: 2015-09-15 17:41+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: comments.php:546 posts-pages.php:533
+#: comments.php:549 posts-pages.php:534
 msgid "Likes"
 msgstr ""
 
-#: comments.php:549 posts-pages.php:536
+#: comments.php:552 posts-pages.php:537
 msgid "Dislikes"
 msgstr ""
 

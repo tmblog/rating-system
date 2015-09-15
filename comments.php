@@ -243,17 +243,18 @@ if($vortex_like_dislike['v-switch-comments']){
 					$user_ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
 					$user_key = 'vortex_system_user_'.$user_ip;
 				};
-				
-				if(!get_comment_meta(get_comment_ID(),$user_key,true) == ''){
-					$current_user = get_comment_meta(get_comment_ID(),$user_key,true);
-					$current_user_disliked = $current_user['disliked'];
-						
-					if($current_user_disliked == 'nodisliked'){
-						return 'vortex-p-dislike-active-comment';
-					}else{
-						return'';	
+				if(is_user_logged_in() || (!is_user_logged_in() && $vortex_like_dislike['v-switch-anon-comment'])){
+					if(!get_comment_meta(get_comment_ID(),$user_key,true) == ''){
+						$current_user = get_comment_meta(get_comment_ID(),$user_key,true);
+						$current_user_disliked = $current_user['disliked'];
+							
+						if($current_user_disliked == 'nodisliked'){
+							return 'vortex-p-dislike-active-comment';
+						}else{
+							return'';	
+						}
 					}
-				}
+				}	
 		}
 
 		function vortex_system_add_like_class_comment(){
@@ -266,15 +267,17 @@ if($vortex_like_dislike['v-switch-comments']){
 					$user_ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
 					$user_key = 'vortex_system_user_'.$user_ip;
 				};
-			
-				if(!get_comment_meta(get_comment_ID(),$user_key,true) == ''){
-					$current_user = get_comment_meta(get_comment_ID(),$user_key,true);
-					$current_user_liked = $current_user['liked'];
+				if(is_user_logged_in() || (!is_user_logged_in() && $vortex_like_dislike['v-switch-anon-comment'])){
+					if(!get_comment_meta(get_comment_ID(),$user_key,true) == ''){
+						$current_user = get_comment_meta(get_comment_ID(),$user_key,true);
+						$current_user_liked = $current_user['liked'];
 				
-				if($current_user_liked == 'noliked'){
-						return 'vortex-p-like-active-comment';
+						if($current_user_liked == 'noliked'){
+							return 'vortex-p-like-active-comment';
+						}
 					}
 				}
+
 		}
 
 		function vortex_system_get_total_likes_comment(){
