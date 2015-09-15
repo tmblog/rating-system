@@ -115,7 +115,7 @@ function vortex_register_plugin() {
 //require all usefull stuffs
 function vortex_systen_main_function(){
 	
-		if(!is_admin){
+		if(!is_admin()){
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 	
