@@ -118,7 +118,8 @@ function vortex_systen_main_function(){
 		if(!is_admin()){
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
-	
+		
+	if(function_exists('is_plugin_active')){
 		if(is_plugin_active('redux-framework/redux-framework.php')){
 			load_plugin_textdomain( 'vortex_system_ld', FALSE, basename(plugin_dir_path( __FILE__ )). '/languages' );
 			$reduxoption = plugin_dir_path( __FILE__).'admin/vortexlikedislike.php';
@@ -190,7 +191,8 @@ function vortex_systen_main_function(){
 					add_post_meta($ID, 'vortex_system_likes', $likes, true);
 					add_post_meta($ID, 'vortex_system_dislikes', $dislikes, true);
 				}
-			}
+			}		
+	}	
 }
 
 add_action('wp_loaded','vortex_systen_main_function');
