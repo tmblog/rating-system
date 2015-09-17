@@ -1,3 +1,4 @@
+
 	function like(event){
 		event.preventDefault();
 		var has_id = jQuery(this).prev();
@@ -70,7 +71,7 @@
 				}
 			},
 			complete:function(){
-				jQuery('body').one('click.vortexlike','.vortex-p-like',like);
+				jQuery(document.body).one('click.vortexlike','.vortex-p-like',like);
 			}
 		});
 	}
@@ -118,12 +119,30 @@
 				}
 			},
 			complete:function(){
-				jQuery('body').one('click.vortexdislike','.vortex-p-dislike',dislike);
+				jQuery(document.body).one('click.vortexdislike','.vortex-p-dislike',dislike);
 			}
 		});
 	}
 
 jQuery(document).ready(function() {
-	jQuery('body').off('click.vortexlike','.vortex-p-like').one('click.vortexlike','.vortex-p-like',like);
-	jQuery('body').off('click.vortexdislike','.vortex-p-dislike').one('click.vortexdislike','.vortex-p-dislike',dislike);
+	if(Modernizr.touchevents){
+		jQuery(document.body).on('mouseleave touchmove click', '.vortex-p-like', function( event ) {
+			if(jQuery(this).hasClass('vortex-p-like-active')){
+				var color = jQuery('.vortex-p-dislike').css('color');
+				jQuery(this).css('color',color);
+			}else{
+				jQuery(this).removeAttr('style');
+			};
+		});
+		jQuery(document.body).on('mouseleave touchmove click', '.vortex-p-dislike', function( event ) {
+			if(jQuery(this).hasClass('vortex-p-dislike-active')){
+				var color = jQuery('.vortex-p-like').css('color');
+				jQuery(this).css('color',color);
+			}else{
+				jQuery(this).removeAttr('style');
+			};
+		});
+	}
+	jQuery(document.body).off('click.vortexlike','.vortex-p-like').one('click.vortexlike','.vortex-p-like',like);
+	jQuery(document.body).off('click.vortexdislike','.vortex-p-dislike').one('click.vortexdislike','.vortex-p-dislike',dislike);
 });

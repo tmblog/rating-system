@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-15 17:41+0300\n"
+"POT-Creation-Date: 2015-09-17 15:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: comments.php:549 posts-pages.php:534
+#: comments.php:555 posts-pages.php:534
 msgid "Likes"
 msgstr ""
 
-#: comments.php:552 posts-pages.php:537
+#: comments.php:558 posts-pages.php:537
 msgid "Dislikes"
 msgstr ""
 
@@ -60,16 +60,16 @@ msgstr ""
 msgid "You can check them both if you want."
 msgstr ""
 
-#: admin/vortexlikedislike.php:181 admin/vortexlikedislike.php:487
+#: admin/vortexlikedislike.php:181
 msgid "Before content"
 msgstr ""
 
-#: admin/vortexlikedislike.php:182 admin/vortexlikedislike.php:488
+#: admin/vortexlikedislike.php:182
 msgid "After content"
 msgstr ""
 
 #: admin/vortexlikedislike.php:194 admin/vortexlikedislike.php:500
-msgid "Button alignment"
+msgid "Buttons alignment"
 msgstr ""
 
 #: admin/vortexlikedislike.php:196 admin/vortexlikedislike.php:502
@@ -154,9 +154,9 @@ msgstr ""
 #: admin/vortexlikedislike.php:317 admin/vortexlikedislike.php:599
 msgid ""
 "If you allow anonymous users to like or dislike , results may not be 100% "
-"accurate meaning that a person could like or dislike twice because it's "
-"impossible for this plugin to track anonymous users over the internet.The IP "
-"of the user is stored so if he changes the IP he can vote again."
+"accurate meaning that a person could like or dislike twice or more because "
+"it's impossible for this plugin to track anonymous users over the internet."
+"The IP of the user is stored so if he changes the IP he can vote again."
 msgstr ""
 
 #: admin/vortexlikedislike.php:323 admin/vortexlikedislike.php:605
@@ -168,7 +168,7 @@ msgid "Hide the counter(number of likes or dislikes) for anonymous users."
 msgstr ""
 
 #: admin/vortexlikedislike.php:330 admin/vortexlikedislike.php:612
-msgid "Button size"
+msgid "Buttons size"
 msgstr ""
 
 #: admin/vortexlikedislike.php:342 admin/vortexlikedislike.php:624
@@ -297,13 +297,21 @@ msgstr ""
 msgid "Turn on like or dislike for comments"
 msgstr ""
 
+#: admin/vortexlikedislike.php:487
+msgid "Before comment"
+msgstr ""
+
+#: admin/vortexlikedislike.php:488
+msgid "After comment"
+msgstr ""
+
 #: admin/vortexlikedislike.php:577
 msgid ""
 "Show the number of likes and dislikes at \"Comments\" in custom columns."
 msgstr ""
 
 #: admin/vortexlikedislike.php:583
-msgid "Orders comments"
+msgid "Order comments"
 msgstr ""
 
 #: admin/vortexlikedislike.php:584

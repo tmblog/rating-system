@@ -38,7 +38,7 @@
 				}
 			},
 			complete:function(){
-				jQuery('body').one('click.vortexlikecomment','.vortex-p-like-comment',like_comment);
+				jQuery(document.body).one('click.vortexlikecomment','.vortex-p-like-comment',like_comment);
 			}
 		});
 	}
@@ -82,12 +82,30 @@
 				}
 			},
 			complete:function(){
-				jQuery('body').one('click.vortexdislikecomment','.vortex-p-dislike-comment',dislike_comment);
+				jQuery(document.body).one('click.vortexdislikecomment','.vortex-p-dislike-comment',dislike_comment);
 			}
 		});
 	}
 
 jQuery(document).ready(function() {
-	jQuery('body').off('click.vortexlikecomment','.vortex-p-like-comment').one('click.vortexlikecomment','.vortex-p-like-comment',like_comment);
-	jQuery('body').off('click.vortexdislikecomment','.vortex-p-dislike-comment').one('click.vortexdislikecomment','.vortex-p-dislike-comment',dislike_comment);
+	if(Modernizr.touchevents){
+		jQuery(document.body).on('mouseleave touchmove click', '.vortex-p-like-comment', function( event ) {
+			if(jQuery(this).hasClass('vortex-p-like-active-comment')){
+				var color = jQuery('.vortex-p-dislike-comment').css('color');
+				jQuery(this).css('color',color);
+			}else{
+				jQuery(this).removeAttr('style');
+			};
+		});
+		jQuery(document.body).on('mouseleave touchmove click', '.vortex-p-dislike-comment', function( event ) {
+			if(jQuery(this).hasClass('vortex-p-dislike-active-comment')){
+				var color = jQuery('.vortex-p-like-comment').css('color');
+				jQuery(this).css('color',color);
+			}else{
+				jQuery(this).removeAttr('style');
+			};
+		});
+	}
+	jQuery(document.body).off('click.vortexlikecomment','.vortex-p-like-comment').one('click.vortexlikecomment','.vortex-p-like-comment',like_comment);
+	jQuery(document.body).off('click.vortexdislikecomment','.vortex-p-dislike-comment').one('click.vortexdislikecomment','.vortex-p-dislike-comment',dislike_comment);
 });

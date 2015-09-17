@@ -38,11 +38,20 @@
 				}
 			},
 			complete:function(){
-				jQuery('body').one('click.vortexlikecomment','.vortex-p-like-comment',like_comment);
+				jQuery(document.body).one('click.vortexlikecomment','.vortex-p-like-comment',like_comment);
 			}
 		});
 	}
 
 jQuery(document).ready(function() {
-	jQuery('body').off('click.vortexlikecomment','.vortex-p-like-comment').one('click.vortexlikecomment','.vortex-p-like-comment',like_comment);
+	if(Modernizr.touchevents){
+		jQuery(document.body).on('mouseleave touchmove click', '.vortex-p-like-comment', function( event ) {
+			if(jQuery(this).hasClass('vortex-p-like-active-comment')){
+				jQuery(this).css('color',vortex_ajax_comment.color);
+			}else{
+				jQuery(this).removeAttr('style');
+			};
+		});
+	}
+	jQuery(document.body).off('click.vortexlikecomment','.vortex-p-like-comment').one('click.vortexlikecomment','.vortex-p-like-comment',like_comment);
 });

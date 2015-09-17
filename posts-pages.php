@@ -688,6 +688,7 @@ global $vortex_like_dislike;
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_style( 'vortex_like_or_dislike', plugin_dir_url( __FILE__ ).'assets/css/style.css' );
 				if(!$vortex_like_dislike['v-switch-dislike']){
+					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
 					wp_enqueue_script( 'vortex_like_or_dislike_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike.js', array('jquery'), '1.0',true);
 					wp_localize_script( 'vortex_like_or_dislike_js', 'vortex_ajax_var', array(
 						'url' => admin_url( 'admin-ajax.php' ),
@@ -695,10 +696,12 @@ global $vortex_like_dislike;
 						)
 					);
 				}else{
+					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
 					wp_enqueue_script( 'vortex_no_dislike_js', plugin_dir_url( __FILE__ ).'assets/js/no-dislike.js', array('jquery'), '1.0',true);
 					wp_localize_script( 'vortex_no_dislike_js', 'vortex_ajax_var', array(
 						'url' => admin_url( 'admin-ajax.php' ),
-						'nonce' => wp_create_nonce( 'ajax-nonce' )
+						'nonce' => wp_create_nonce( 'ajax-nonce' ),
+						'color' => esc_js($vortex_like_dislike['v_default_color'])
 						)
 					);
 				}
@@ -706,6 +709,7 @@ global $vortex_like_dislike;
 				wp_enqueue_style( 'vortex_like_or_dislike', plugin_dir_url( __FILE__ ).'assets/css/style.css' );
 				wp_enqueue_script( 'jquery' );
 				if(!$vortex_like_dislike['v-switch-dislike']){
+					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
 					wp_enqueue_script( 'vortex_like_or_dislike_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike.js', array('jquery'), '1.0',true);
 					wp_localize_script( 'vortex_like_or_dislike_js', 'vortex_ajax_var', array(
 						'url' => admin_url( 'admin-ajax.php' ),
@@ -713,10 +717,12 @@ global $vortex_like_dislike;
 						)
 					);
 				}else{
+					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
 					wp_enqueue_script( 'vortex_no_dislike_js', plugin_dir_url( __FILE__ ).'assets/js/no-dislike.js', array('jquery'), '1.0',true);
 					wp_localize_script( 'vortex_no_dislike_js', 'vortex_ajax_var', array(
 						'url' => admin_url( 'admin-ajax.php' ),
-						'nonce' => wp_create_nonce( 'ajax-nonce' )
+						'nonce' => wp_create_nonce( 'ajax-nonce' ),
+						'color' => esc_js($vortex_like_dislike['v_default_color'])
 						)
 					);
 				}

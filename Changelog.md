@@ -1,3 +1,7 @@
+## [2.0] 
+### Fix english typos.
+### Improved mobile experience.
+### Minor performance improvement.
 ## [1.9] 
 ### Fix undefined variable.
 ### Fix options from posts affected by options from comments.

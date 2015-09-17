@@ -16,7 +16,7 @@
         // This is where your data is stored in the database and also becomes your global variable name.
         'display_name'         => 'Rating System',
         // Name that appears at the top of your panel
-        'display_version'      => '1.9',
+        'display_version'      => '2.0',
         // Version that appears at the top of your panel
         'menu_type'            => 'menu',
         //Specify if the admin menu should appear or not. Options: menu or submenu (Under appearance only)
@@ -191,7 +191,7 @@
 				'id'       => 'vortex-button-align',
 				'type'     => 'select',
 				'required' => array('v-switch-posts','equals','1'),
-				'title'    => __('Button alignment',$domain), 
+				'title'    => __('Buttons alignment',$domain), 
 				'options'  => array(
 					'1' => __('Left',$domain),
 					'2' => __('Center',$domain),
@@ -314,7 +314,7 @@
 			'required' => array('v-switch-posts','equals','1'),
 			'title'    => __('Anonymous users', $domain),
 			'subtitle' => __('If you want to allow anonymous users to vote turn this on.',$domain),
-			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored so if he changes the IP he can vote again.',$domain),
+			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice or more because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored so if he changes the IP he can vote again.',$domain),
 			'default'  => false,
 			),array(
 			'id'       => 'v-switch-anon-counter',
@@ -327,7 +327,7 @@
 				'id'          => 'vortex-buttons-size',
 				'type'        => 'typography',
 				'required' => array('v-switch-posts','equals','1'),
-				'title'       => __('Button size', $domain),
+				'title'       => __('Buttons size', $domain),
 				'google'      => false, 
 				'font-backup' => false,
 				'font-size'	  => true,
@@ -484,8 +484,8 @@
 			 
 				//Must provide key => value pairs for multi checkbox options
 				'options'  => array(
-					'1' => __('Before content',$domain),
-					'2' => __('After content',$domain),
+					'1' => __('Before comment',$domain),
+					'2' => __('After comment',$domain),
 				),
 			 
 				//See how default has changed? you also don't need to specify opts that are 0.
@@ -497,7 +497,7 @@
 				'id'       => 'vortex-button-align-comment',
 				'type'     => 'select',
 				'required' => array('v-switch-comments','equals','1'),
-				'title'    => __('Button alignment', $domain), 
+				'title'    => __('Buttons alignment', $domain), 
 				'options'  => array(
 					'1' => __('Left',$domain),
 					'2' => __('Center',$domain),
@@ -580,7 +580,7 @@
 			'id'       => 'v-switch-order-comment',
 			'type'     => 'switch', 
 			'required' => array('v-switch-comments','equals','1'),
-			'title'    => __('Orders comments', $domain),
+			'title'    => __('Order comments', $domain),
 			'subtitle' => __('Order comments by the number of likes they have.',$domain),
 			'default'  => false,
 			),array(
@@ -596,7 +596,7 @@
 			'required' => array('v-switch-comments','equals','1'),
 			'title'    => __('Anonymous users', $domain),
 			'subtitle' => __('If you want to allow anonymous users to vote turn this on.',$domain),
-			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored so if he changes the IP he can vote again.',$domain),
+			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice or more because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored so if he changes the IP he can vote again.',$domain),
 			'default'  => false,
 			),array(
 			'id'       => 'v-switch-anon-counter-comment',
@@ -609,7 +609,7 @@
 				'id'          => 'vortex-buttons-size-comment',
 				'type'        => 'typography',
 				'required' => array('v-switch-comments','equals','1'),
-				'title'       => __('Button size', $domain),
+				'title'       => __('Buttons size', $domain),
 				'google'      => false, 
 				'font-backup' => false,
 				'font-size'	  => true,
