@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 2.0
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,9 @@ notices
 >
 
 == Changelog ==
+= 2.1 = 
+* Fix unable to save settings.Huge thanks to [aekae](https://wordpress.org/support/profile/aekae)
+
 = 2.0 = 
 * Fix english typos.
 * Improved mobile experience.

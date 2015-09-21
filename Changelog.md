@@ -1,3 +1,5 @@
+## [2.1] 
+### Fix unable to save settings.
 ## [2.0] 
 ### Fix english typos.
 ### Improved mobile experience.
