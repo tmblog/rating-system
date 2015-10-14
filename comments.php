@@ -91,6 +91,8 @@ if($vortex_like_dislike['v-switch-comments']){
 					update_comment_meta($post_id,$user_key,$user_data);
 					
 					if ($vortex_like_dislike['v_custom_text_com']){
+						$current_likes = $vortex_like_dislike['v_custom_text_com_like'];
+					};
 						
 						$response = array(
 							'likes' => $current_likes,
@@ -99,7 +101,6 @@ if($vortex_like_dislike['v-switch-comments']){
 						echo json_encode($response);
 						
 						wp_die();
-					}
 				}
 				if ($vortex_like_dislike['v_custom_text_com']){
 					$current_likes = $vortex_like_dislike['v_custom_text_com_like'];
@@ -209,6 +210,8 @@ if($vortex_like_dislike['v-switch-comments']){
 					update_comment_meta($post_id,$user_key,$user_data);
 					
 					if ($vortex_like_dislike['v_custom_text_com']){
+						$current_dislikes = $vortex_like_dislike['v_custom_text_com_dislike'];
+					}
 						$response = array(
 							'dislikes' => $current_dislikes,
 							'both'   => 'no'
@@ -216,7 +219,6 @@ if($vortex_like_dislike['v-switch-comments']){
 						echo json_encode($response);
 						
 						wp_die();
-					}
 				}
 				
 				if ($vortex_like_dislike['v_custom_text_com']){
@@ -480,7 +482,7 @@ if($vortex_like_dislike['v-switch-comments']){
 			
 			return $comment_text.vortex_render_for_comments();
 		}
-
+		
 		if($vortex_like_dislike['v_button_visibility_comments'][1] && $vortex_like_dislike['v_button_visibility_comments'][2] ){
 			add_filter('comment_text','vortex_system_before_comment');
 			add_filter('comment_text','vortex_system_after_comment');
@@ -492,7 +494,19 @@ if($vortex_like_dislike['v-switch-comments']){
 
 	}
 	add_action('wp','vortex_system_insert_comments');
-	
+	//Epoch support
+	if($vortex_like_dislike['v_enable_epoch']){
+		include(plugin_dir_path( __FILE__ ).'epoch.php');
+		if($vortex_like_dislike['v_button_visibility_comments'][1] && $vortex_like_dislike['v_button_visibility_comments'][2] ){
+			add_filter('comment_text','vortex_render_epoch_after',10,2);
+			add_filter('comment_text','vortex_render_epoch_before',10,2);
+		}elseif($vortex_like_dislike['v_button_visibility_comments'][1]){
+			add_filter('comment_text','vortex_render_epoch_before',10,2);
+		}elseif($vortex_like_dislike['v_button_visibility_comments'][2]){
+			add_filter('comment_text','vortex_render_epoch_after',10,2);
+		}
+	}
+	//end epoch support
 	function vortex_system_styles_scripts_comments(){
 		global $vortex_like_dislike;
 			

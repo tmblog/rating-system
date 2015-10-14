@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 2.1
+Stable tag: 2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,6 +14,7 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 * ATTENTION!YOU NEED [REDUX FRAMEWORK](https://wordpress.org/plugins/redux-framework/)(FREE PLUGIN) INSTALLED AND ACTIVATED FOR THIS PLUGIN TO WORK.
 * Support for custom post type(WooCommerce etc). &#10004;
 * Support for bbPress. &#10004;
+* Support for Epoch. &#10004;
 * Support for posts, pages, comments. &#10004;
 * No backlink. &#10004;
 * No ads. &#10004;
@@ -22,6 +23,7 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 * Option to disable the dislike button. &#10004;
 * Free Widget to show your most liked posts. &#10004;
 * Free WordPress Dashboard widget. &#10004;
+* Shortcode [rating-system](You must have turned on like or dislike for posts and pages and if you want you can disable display buttons on). &#10004;
 * Sort comments by likes. &#10004;
 * Check the screenshots tab we have a lot of cool features.
 * If you finds bugs or need support go to the support tab.
@@ -29,7 +31,16 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 * [Facebook](https://www.facebook.com/VortexThemes) [Twitter](https://twitter.com/VortexThemes) [Github](https://github.com/VortexThemes/rating-system)
 
 == Installation ==
-
+You can use this code to generate the like button inside the loop
+<?php 	if(function_exists('vortex_render_for_posts')){
+			echo vortex_render_for_posts(false);
+		}
+?>
+If you want to generate both(like and dislike) use this code
+<?php 	if(function_exists('vortex_render_for_posts')){
+			echo vortex_render_for_posts();
+		}
+?>
 1. After you download the plugin go to Plugins -> Add New -> Upload Plugin
 2. Choose the zip and upload
 
@@ -67,6 +78,16 @@ notices
 >
 
 == Changelog ==
+= 2.5 = 
+* Added auto delete post at a given number of dislikes.
+* Added Epoch Support.(Settings for comments -> Enable Epoch Support).
+* Fix error when voting.
+= 2.4 = 
+* Added a way to disable the like button from function.
+= 2.3 = 
+* Fix fatal error.
+= 2.2 = 
+* Added the shortcode [rating-system](You must have turned on like or dislike for posts and pages).
 = 2.1 = 
 * Fix unable to save settings.Huge thanks to [aekae](https://wordpress.org/support/profile/aekae)
 

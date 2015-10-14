@@ -3,7 +3,7 @@
 * Plugin Name: Rating System
 * Plugin URI: http://github.com/VortexThemes/rating-system
 * Description: The simple way to add like or dislike buttons.
-* Version: 2.1
+* Version: 2.5
 * Author: VortexThemes
 * Author URI: https://github.com/VortexThemes
 * License: GPL2
@@ -15,7 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;//exit if accessed directly
 
 //activation hook
 include(plugin_dir_path( __FILE__ ).'activation.php');
-//tgmpa
+
+function vortex_rating_require_tgmpa(){
+	//tgmpa
 include(plugin_dir_path( __FILE__).'tgmpa/class-tgm-plugin-activation.php');
 add_action( 'tgmpa_register', 'vortex_register_plugin' );
 function vortex_register_plugin() {
@@ -112,6 +114,8 @@ function vortex_register_plugin() {
 
 	tgmpa( $plugins, $config );
 }
+}
+add_action('plugins_loaded','vortex_rating_require_tgmpa');
 //require all usefull stuffs
 function vortex_systen_main_function(){
 
@@ -195,7 +199,7 @@ function vortex_systen_main_function(){
 	}	
 }
 
-add_action('wp_loaded','vortex_systen_main_function');
+add_action('plugins_loaded','vortex_systen_main_function');
 
 function rating_system_load_widgets(){
 	$widget = plugin_dir_path( __FILE__ ).'widget/widget.php';
@@ -206,3 +210,8 @@ function rating_system_load_widgets(){
 	}
 }
 add_action('plugins_loaded','rating_system_load_widgets');
+//add shortcode
+function vortex_rating_system_register_shortcodes(){
+		 add_shortcode('rating-system', 'vortex_render_for_posts');
+}
+add_action( 'init', 'vortex_rating_system_register_shortcodes');
