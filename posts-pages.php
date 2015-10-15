@@ -649,6 +649,13 @@ global $vortex_like_dislike;
 			}
 		}
 		
+	//buddypress support
+	if($vortex_like_dislike['v_enable_buddybpress']){
+		include(plugin_dir_path( __FILE__ ).'buddypress.php');
+	}
+	//end buddypress support 
+		
+		
 	function vortex_system_insert(){
 		
 		function vortex_system_before_post($content){
@@ -711,7 +718,6 @@ global $vortex_like_dislike;
 				return $content.vortex_render_for_posts();
 			}else return $content;
 		}
-
 		global $vortex_like_dislike;
 		if(!post_password_required()){
 			if($vortex_like_dislike['v_button_visibility'][1] && $vortex_like_dislike['v_button_visibility'][2] ){

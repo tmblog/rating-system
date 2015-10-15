@@ -1,3 +1,6 @@
+## [2.6] 
+### Added buddyPress activity support.
+### Improved Epoch support.
 ## [2.5] 
 ### Added auto delete post at a given number of dislikes.
 ### Added Epoch Support.(Settings for comments -> Enable Epoch Support).

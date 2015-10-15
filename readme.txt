@@ -3,8 +3,8 @@ Contributors: VortexThemes, AlexAlexandru
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
-Tested up to: 4.3
-Stable tag: 2.5
+Tested up to: 4.3.1
+Stable tag: 2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,9 @@ notices
 >
 
 == Changelog ==
+= 2.6 = 
+* Added buddyPress activity support.
+* Improved Epoch support.
 = 2.5 = 
 * Added auto delete post at a given number of dislikes.
 * Added Epoch Support.(Settings for comments -> Enable Epoch Support).
