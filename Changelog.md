@@ -1,3 +1,8 @@
+## [2.7.1] 
+### Fixed fatal error on PHP 5.3.
+## [2.7]
+### Added MyCred integration.
+### Improved bbPress support.
 ## [2.6] 
 ### Added buddyPress activity support.
 ### Improved Epoch support.
