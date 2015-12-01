@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-01 14:26+0200\n"
+"POT-Creation-Date: 2015-12-01 09:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: comments.php:750 posts-pages.php:633
+#: comments.php:745 posts-pages.php:626
 msgid "Likes"
 msgstr ""
 
-#: comments.php:753 posts-pages.php:636
+#: comments.php:748 posts-pages.php:629
 msgid "Dislikes"
 msgstr ""
 
@@ -70,19 +70,19 @@ msgstr ""
 msgid "Points for like/dislike posts"
 msgstr ""
 
-#: rating-system.php:132
+#: rating-system.php:131
 msgid "Receive like for posts(content author)"
 msgstr ""
 
-#: rating-system.php:133
+#: rating-system.php:132
 msgid "Receive like for posts(like author)"
 msgstr ""
 
-#: rating-system.php:134
+#: rating-system.php:133
 msgid "Receive like for comments(content author)"
 msgstr ""
 
-#: rating-system.php:135
+#: rating-system.php:134
 msgid "Receive like for comments(like author)"
 msgstr ""
 

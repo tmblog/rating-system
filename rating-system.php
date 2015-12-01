@@ -3,7 +3,7 @@
 * Plugin Name: Rating System
 * Plugin URI: http://github.com/VortexThemes/rating-system
 * Description: The simple way to add like or dislike buttons.
-* Version: 2.7.2
+* Version: 2.7.3
 * Author: VortexThemes
 * Author URI: https://github.com/VortexThemes
 * License: GPL2
@@ -20,6 +20,7 @@ function vortex_rating_require_tgmpa(){
 	//tgmpa
 include(plugin_dir_path( __FILE__).'tgmpa/class-tgm-plugin-activation.php');
 add_action( 'tgmpa_register', 'vortex_register_plugin' );
+
 function vortex_register_plugin() {
 
 	$plugins = array(
@@ -225,7 +226,87 @@ function rating_system_load_widgets(){
 add_action('plugins_loaded','rating_system_load_widgets');
 //add shortcode
 function vortex_rating_system_register_shortcodes(){
-		 add_shortcode('rating-system-posts', 'vortex_render_for_posts');
-		 add_shortcode('rating-system-comments', 'vortex_render_for_comments');
+
+		function vortex_shortcode_render_posts(){
+				return vortex_render_for_posts();
+		}
+		
+		function vortex_shortcode_render_posts_disable_dislike(){
+				return vortex_render_for_posts(false);
+		}
+		
+		function vortex_shortcode_render_comments(){
+				return vortex_render_for_comments();
+		}
+		
+		function vortex_shortcode_render_comments_disable_dislike(){
+				return vortex_render_for_comments(false);
+		}
+		
+		function vortex_shortcode_render_top_posts($atts){
+			
+			extract( shortcode_atts(  array(
+				'number' => '5',
+				'display_counter' => 'yes',
+				'display_content' => 'no',
+				'link_to_post'	  => 'yes',
+				'category_slugs'	=> '',
+			), $atts ) );
+			
+			$args = array(
+					'orderby'			=> 'meta_value_num',
+					'meta_key'			=> 'vortex_system_likes',
+					'post_type' 		=> 'post',
+					'post_status'		=> 'publish',
+					'posts_per_page'	=> $number,
+					'category_name'		=> $category_slugs
+
+			);	
+			// The Query
+			$query = new WP_Query( $args );
+			// The Loop
+			if ( $query->have_posts() ) {
+				
+				echo '<ul>';
+				while ( $query->have_posts() ) {
+					$query->the_post();
+						$current_likes = get_post_meta(get_the_ID(),'vortex_system_likes',true);
+						echo '<li class="top-posts '.get_the_ID().' ">';
+						echo '<div class="top-posts-title '.get_the_ID().'">';
+						if($link_to_post == "yes"){
+								echo '<a class="top-posts-link '.get_the_ID().'" href="'.get_the_permalink().'">'.get_the_title().'</a>';
+						} else {
+								the_title();
+						}
+							
+						if($display_counter == 'yes'){
+							echo ' '.$current_likes.' likes';
+						}
+						echo '</div>';
+						
+						if($display_content == 'yes'){
+							echo '<div class="top-posts-content '.get_the_ID().'">';
+								echo get_the_content();
+							echo '</div>';
+						}
+						
+						echo '</li>';
+				}
+				echo '</ul>';
+			} else {
+				echo 'No posts found.';
+			}
+			// Restore original Post Data
+			wp_reset_postdata();
+			
+		}
+		
+		add_shortcode('rating-system-top-posts', 'vortex_shortcode_render_top_posts');
+		
+		add_shortcode('rating-system-posts', 'vortex_shortcode_render_posts');
+		add_shortcode('rating-system-posts-disable-dislike', 'vortex_shortcode_render_posts_disable_dislike');
+		
+		add_shortcode('rating-system-comments', 'vortex_shortcode_render_comments');
+		add_shortcode('rating-system-comments-disable-dislike', 'vortex_shortcode_render_comments_disable_dislike');
 }
 add_action( 'init', 'vortex_rating_system_register_shortcodes');

@@ -92,9 +92,6 @@ if($vortex_like_dislike['v-switch-comments']){
 					update_comment_meta($post_id,$likes,$current_likes);
 					update_comment_meta($post_id,$user_key,$user_data);
 					do_action("vortex_com_dislike",'-likes','nothing',$current_user_id,$post_id);
-					if ($vortex_like_dislike['v_custom_text_com']){
-						$current_likes = $vortex_like_dislike['v_custom_text_com_like'];
-					};
 						
 						$response = array(
 							'likes' => $current_likes,
@@ -211,9 +208,7 @@ if($vortex_like_dislike['v-switch-comments']){
 					
 					update_comment_meta($post_id,$user_key,$user_data);
 					do_action("vortex_com_dislike",'nothing','-dislikes',$current_user_id,$post_id);
-					if ($vortex_like_dislike['v_custom_text_com']){
-						$current_dislikes = $vortex_like_dislike['v_custom_text_com_dislike'];
-					}
+					
 						$response = array(
 							'dislikes' => $current_dislikes,
 							'both'   => 'no'
@@ -420,11 +415,11 @@ if($vortex_like_dislike['v-switch-comments']){
 			}
 		}
 		
-		function vortex_render_for_comments(){
+		function vortex_render_for_comments($dislike = true){
 			
 			global $vortex_like_dislike;
 			
-			if(!$vortex_like_dislike['v-switch-dislike-comment']){
+			if(!$vortex_like_dislike['v-switch-dislike-comment'] && $dislike){
 			//leave it inline because wordpress will add <p> tags creating a space I don't know why	
 			$buttons = '<div class="vortex-container-vote-comment '.vortex_button_align_comment().'"><div class="vortex-container-like-comment"><input type="hidden" value="'.get_comment_ID().'" ></input><div class="vortex-p-like-comment '.get_comment_ID().' '.vortex_system_add_like_class_comment().' '.vortex_system_get_like_icon_comment().'">'.vortex_system_like_counter_comment().'</div></div>'.vortex_system_render_dislike_button_comment().'</div>';
 				

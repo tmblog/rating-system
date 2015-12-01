@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
 Tested up to: 4.3.1
-Stable tag: 2.7.2
+Stable tag: 2.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,24 +26,38 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 * Free Widget to show your most liked posts. &#10004;
 * Free WordPress Dashboard widget. &#10004;
 * Shortcode [rating-system-posts](You must have turned on like or dislike for posts and pages and if you want you can disable display buttons on). &#10004;
-* Shortcode [rating-system-comments]. &#10004;
+* Shortcode [rating-system-posts-disable-dislike](Displays only the like button, the above also applies here). &#10004;
 * Sort comments by likes. &#10004;
 * Check the screenshots tab we have a lot of cool features.
 * If you finds bugs or need support go to the support tab.
 * If you like this plugin consider making a [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S) or Rate us &#9733;&#9733;&#9733;&#9733;&#9733;
 * [Facebook](https://www.facebook.com/VortexThemes) [Twitter](https://twitter.com/VortexThemes) [Github](https://github.com/VortexThemes/rating-system)
 
+> **How to use**
+
+* Use [rating-system-posts] to show  like & dislike for a page, post,bbPress,buddyPress etc (DO NOT USE FOR COMMENTS).
+* Use [rating-system-posts-disable-dislike] to show only the like button for a page, post,bbPress,buddyPress etc (DO NOT USE FOR COMMENTS).
+* Use [rating-system-comments] to show like & dislike for comments (USE ONLY FOR STANDARD WORDPRESS COMMENTS).
+* Use [rating-system-comments-disable-dislike] to show only the like button for commens (USE ONLY FOR STANDARD WORDPRESS COMMENTS).
+* Use [rating-system-top-posts] to display all posts ordered by their likes.
+* Shortcode parameters:
+* number = the number of posts to be dislayed (type a number here)(default 5)
+* display_counter = display the number of likes after the title (type yes or no)(default yes)
+* display_content = display the content for each post (type yes or no)(default no)
+* link_to_post = make the title of the post a link to original post (type yes or no)(default yes)
+* category_slugs = only display posts from certain categories (type categories slugs here)(default empty)
+* Example:
+* Display top 5 posts: [rating-system-top-posts number="5"]
+* Display top 5 posts without link to original post: [rating-system-top-posts number="5" link_to_post="no"]
+* Display top 5 posts from category with slug cats: [rating-system-top-posts number="5" category_slugs="cats"]
+* Display top 10 posts from multiple categories: [rating-system-top-posts number="10" category_slugs="cats,dogs,planes"]
+* Display top 10 posts from multiple categories with content and no counter: [rating-system-top-posts display_counter="no" display_content="yes" number="10" category_slugs="cats,dogs,planes"]
+
+> **Translation**
+
+* Avaible in Arabic.Translation provided by [dev-ide.net](https://www.dev-ide.net/wordpress/plugins/plugin-rating-system-for-wordpress.html)
 == Installation ==
-You can use this code to generate the like button inside the loop
-<?php 	if(function_exists('vortex_render_for_posts')){
-			echo vortex_render_for_posts(false);
-		}
-?>
-If you want to generate both(like and dislike) use this code
-<?php 	if(function_exists('vortex_render_for_posts')){
-			echo vortex_render_for_posts();
-		}
-?>
+
 1. After you download the plugin go to Plugins -> Add New -> Upload Plugin
 2. Choose the zip and upload
 
@@ -62,14 +76,10 @@ If you want to generate both(like and dislike) use this code
 11. bbPress support
 12. WooCommerce support
 
-== Upgrade Notice ==
-
-notices
-
 == Frequently Asked Questions ==
 > **Question: Does this plugin support bbPress?**
 >
-> **Answer:** Yes.You will have to turn on bbPress support from the plugin option panel(check the screenshots tab to see our plugin in action).
+> **Answer:** Yes.You will have to turn on bbPress support from the plugin option panel and on Display buttons on: check Custom post type single.(check the screenshots tab to see our plugin in action).
 >
 > **Question: Can I add like or dislike to WooCommerce products?**
 >
@@ -79,8 +89,18 @@ notices
 >
 > **Answer:** Yes.
 >
+> **For WordPress post, pages, bbPress  and buddyPress use [rating-system-posts] or [rating-system-posts-disable-dislike].**
+>
 
 == Changelog ==
+= 2.7.3 = 
+* Fixed Custom text being displayed when cancelling vote.
+* Fixed [rating-system-posts] shortcode only showing the like button.
+* Fixed [rating-system-comments] shortcode only showing the like button.
+* Added [rating-system-posts-disable-dislike] to show only the like button.
+* Added [rating-system-comments-disable-dislike] to show only the like button for comments.
+* Added [rating-system-top-posts].
+* Added Arabic translation provided by [dev-ide.net](https://www.dev-ide.net/wordpress/plugins/plugin-rating-system-for-wordpress.html)
 = 2.7.2 = 
 * Fixed fatal error on PHP 5.2.4.
 * Added shortcode for comments.

@@ -141,10 +141,7 @@ global $vortex_like_dislike;
 					update_post_meta($post_id,$likes,$current_likes);
 					update_post_meta($post_id,$user_key,$user_data);
 					do_action("vortex_post_dislike",'-likes','nothing',$current_user_id,$post_id);
-					global $vortex_like_dislike;
-					if ($vortex_like_dislike['v_custom_text']){
-							$current_likes = $vortex_like_dislike['v_custom_text_post_like'];
-					};
+					
 						$response = array(
 							'likes' => $current_likes,
 							'both'   => 'no',
@@ -313,10 +310,6 @@ global $vortex_like_dislike;
 					update_post_meta($post_id,$dislikes,$current_dislikes);
 					do_action("vortex_post_dislike",'nothing','-dislikes',$current_user_id,$post_id);
 					update_post_meta($post_id,$user_key,$user_data);
-					
-					if ($vortex_like_dislike['v_custom_text']){
-						$current_dislikes = $vortex_like_dislike['v_custom_text_post_dislike'];
-					}
 
 						$response = array(
 							'dislikes' => $current_dislikes,

@@ -1,3 +1,11 @@
+## [2.7.3]
+### Fixed Custom text being displayed when cancelling vote.
+### Fixed [rating-system-posts] shortcode only showing the like button.
+### Fixed [rating-system-comments] shortcode only showing the like button.
+### Added [rating-system-posts-disable-dislike] to show only the like button.
+### Added [rating-system-comments-disable-dislike] to show only the like button for comments.
+### Added [rating-system-top-posts].
+### Added Arabic translation provided by [dev-ide.net](https://www.dev-ide.net/wordpress/plugins/plugin-rating-system-for-wordpress.html)
 ## [2.7.2]
 ### Fixed fatal error on PHP 5.2.4.
 ### Added shortcode for comments.
