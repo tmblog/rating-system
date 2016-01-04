@@ -3,7 +3,7 @@
 * Plugin Name: Rating System
 * Plugin URI: http://github.com/VortexThemes/rating-system
 * Description: The simple way to add like or dislike buttons.
-* Version: 2.7.3
+* Version: 2.7.4
 * Author: VortexThemes
 * Author URI: https://github.com/VortexThemes
 * License: GPL2
@@ -12,9 +12,56 @@
 */
 if ( ! defined( 'ABSPATH' ) ) exit;//exit if accessed directly
 
+function vortex_ra_read_cookie($name,$postid){
+	if(isset($_COOKIE[$name])){
+		$decode = json_decode($_COOKIE[$name]);
+		$found = array_search($postid, $decode);
 
-//activation hook
-include(plugin_dir_path( __FILE__ ).'activation.php');
+		if ($found !== false) {
+			return 'found';
+		} else {
+			return 'notfound';
+		}
+	}else{
+		return 'notfound';
+	}
+}
+
+function vortex_ra_cookie($name,$postid,$name2){
+	if(vortex_ra_read_cookie($name2,$postid) == 'found' && vortex_ra_read_cookie($name,$postid) == 'notfound'){
+
+		$decode2 = json_decode($_COOKIE[$name2]);
+		$decode2 = array_diff($decode2, array($postid));
+		$encode2 = json_encode(array_values($decode2));
+		setcookie($name2,$encode2,time()+ 2419200,'/',COOKIE_DOMAIN,is_ssl(),true);
+		
+		if(!isset($_COOKIE[$name])){
+			$decode = array();
+		}else{
+			$decode = json_decode($_COOKIE[$name]);
+		}
+
+		array_push($decode,$postid);
+		$encode = json_encode($decode);
+		setcookie($name,$encode,time()+ 2419200,'/',COOKIE_DOMAIN,is_ssl(),true);
+		
+	}elseif(!isset($_COOKIE[$name])){
+		$array = json_encode(array($postid));
+		setcookie($name,$array,time()+ 2419200,'/',COOKIE_DOMAIN,is_ssl(),true);
+	}else{
+		$decode = json_decode($_COOKIE[$name]);
+		if(!in_array($postid,$decode)){
+			array_push($decode,$postid);
+			$encode = json_encode($decode);
+			setcookie($name,$encode,time()+ 2419200,'/',COOKIE_DOMAIN,is_ssl(),true);
+		}else{
+			$decode = json_decode($_COOKIE[$name]);
+			$decode = array_diff($decode, array($postid));
+			$encode = json_encode(array_values($decode));
+			setcookie($name,$encode,time()+ 2419200,'/',COOKIE_DOMAIN,is_ssl(),true);
+		}
+	}
+}
 
 function vortex_rating_require_tgmpa(){
 	//tgmpa
@@ -149,6 +196,7 @@ function vortex_systen_main_function(){
 				if ( !isset( $vortex_like_dislike ) && file_exists($reduxoption) ) {
 					include($reduxoption);
 				};
+	
 				//donation button
 				function vortex_system_donation_button(){
 					echo '<form style="width:260px;margin:0 auto;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -165,9 +213,11 @@ function vortex_systen_main_function(){
 				Redux::init('vortex_like_dislike');
 				
 				global $vortex_like_dislike;
-
+				
 				if($vortex_like_dislike['v-switch-posts'] && isset($vortex_like_dislike['v-switch-posts'])){
 					include(plugin_dir_path( __FILE__ ).'posts-pages.php');
+					//load metabox
+					include(plugin_dir_path( __FILE__).'metabox.php');
 				}
 				
 				if($vortex_like_dislike['v-switch-comments'] && isset($vortex_like_dislike['v-switch-comments'])){
@@ -217,22 +267,37 @@ add_action('plugins_loaded','vortex_systen_main_function');
 
 function rating_system_load_widgets(){
 	$widget = plugin_dir_path( __FILE__ ).'widget/widget.php';
-	$dashboardwidget = plugin_dir_path( __FILE__ ).'widget/dashboard-widget.php';
-	if(file_exists($widget) && file_exists($dashboardwidget)){
+	if(file_exists($widget)){
 		include( $widget );
-		include( $dashboardwidget );
 	}
 }
 add_action('plugins_loaded','rating_system_load_widgets');
 //add shortcode
 function vortex_rating_system_register_shortcodes(){
 
-		function vortex_shortcode_render_posts(){
-				return vortex_render_for_posts();
+		function vortex_shortcode_render_posts($atts){
+				extract( shortcode_atts(  array(
+					'counter' => "yes",
+				), $atts ) );
+				
+				if($counter == "yes"){
+					return vortex_render_for_posts(true,true);
+				}else{
+					return vortex_render_for_posts(true,false);
+				}
 		}
 		
-		function vortex_shortcode_render_posts_disable_dislike(){
-				return vortex_render_for_posts(false);
+		function vortex_shortcode_render_posts_disable_dislike($atts){
+				extract( shortcode_atts(  array(
+					'counter' => true,
+				), $atts ) );
+				
+				
+				if($counter == "yes"){
+					return vortex_render_for_posts(false,true);
+				}else{
+					return vortex_render_for_posts(false,false);
+				}
 		}
 		
 		function vortex_shortcode_render_comments(){
@@ -310,3 +375,4 @@ function vortex_rating_system_register_shortcodes(){
 		add_shortcode('rating-system-comments-disable-dislike', 'vortex_shortcode_render_comments_disable_dislike');
 }
 add_action( 'init', 'vortex_rating_system_register_shortcodes');
+

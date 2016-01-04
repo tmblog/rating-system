@@ -13,9 +13,11 @@ if($vortex_like_dislike['v-switch-comments']){
 				if ( ! wp_verify_nonce( $nonce, 'ajax-nonce' ) ){
 					wp_die();
 				}
-				
+				if(!$vortex_like_dislike['v-switch-anon'] && !is_user_logged_in()){
+					exit();
+				}
 				$post_id = absint($_POST['post_id']);
-				
+				vortex_ra_cookie('likecom',$post_id,'dislikecom');
 				$likes = 'vortex_system_likes';
 				$dislikes = 'vortex_system_dislikes';
 				
@@ -25,7 +27,7 @@ if($vortex_like_dislike['v-switch-comments']){
 				$user_key = 'vortex_system_user_'.$current_user_id;
 				
 				}elseif($vortex_like_dislike['v-switch-anon-comment']){
-					
+					$current_user_id = get_current_user_id();
 					$user_ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
 					
 					$user_key = 'vortex_system_user_'.$user_ip;
@@ -52,7 +54,7 @@ if($vortex_like_dislike['v-switch-comments']){
 				$disliked_value = $current_user['disliked'];
 				$current_user_liked = $current_user['liked'];
 				
-				if($current_user_liked == 'liked' && $disliked_value == 'nodisliked'){
+				if($current_user_liked == 'liked' && $disliked_value == 'nodisliked' || vortex_ra_read_cookie('dislikecom',$post_id) == 'found' && vortex_ra_read_cookie('likecom',$post_id) == 'notfound'){
 					$current_likes = get_comment_meta($post_id,$likes,true);
 					$current_likes++;
 					update_comment_meta($post_id,$likes,$current_likes);
@@ -75,7 +77,7 @@ if($vortex_like_dislike['v-switch-comments']){
 					echo json_encode($response);
 					exit();
 					
-				}elseif($current_user_liked == 'liked'){
+				}elseif($current_user_liked == 'liked' || vortex_ra_read_cookie('likecom',$post_id) == 'notfound'){
 					//he likes the post add +1 to likes
 					//change the liked value so when he clicks again we can undo his vote
 					$current_likes = get_comment_meta($post_id,$likes,true);
@@ -84,7 +86,7 @@ if($vortex_like_dislike['v-switch-comments']){
 					update_comment_meta($post_id,$user_key,$user_data_new);
 					do_action("vortex_com_dislike",'+likes','nothing',$current_user_id,$post_id);
 					
-				}elseif($current_user_liked == 'noliked'){
+				}elseif($current_user_liked == 'noliked' || vortex_ra_read_cookie('likecom',$post_id) == 'found'){
 					//he doesn't like the post anymore let's undo his vote and change his meta so we can add his vote back 
 					//if he changes his mind
 					$current_likes = get_comment_meta($post_id,$likes,true);
@@ -126,9 +128,11 @@ if($vortex_like_dislike['v-switch-comments']){
 				}
 			
 				global $vortex_like_dislike;
-				
+				if(!$vortex_like_dislike['v-switch-anon'] && !is_user_logged_in()){
+					exit();
+				}
 				$post_id = absint($_POST['post_id']);
-
+				vortex_ra_cookie('dislikecom',$post_id,'likecom');
 				$likes = 'vortex_system_likes';
 				$dislikes = 'vortex_system_dislikes';
 				
@@ -138,7 +142,7 @@ if($vortex_like_dislike['v-switch-comments']){
 				$user_key = 'vortex_system_user_'.$current_user_id;
 				
 				}elseif($vortex_like_dislike['v-switch-anon-comment']){
-					
+					$current_user_id = get_current_user_id();
 					$user_ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
 					
 					$user_key = 'vortex_system_user_'.$user_ip;
@@ -166,7 +170,7 @@ if($vortex_like_dislike['v-switch-comments']){
 				$current_user_disliked = $current_user['disliked'];
 				$liked_value = $current_user['liked'];
 				
-				if($current_user_disliked == 'disliked' && $liked_value == 'noliked'){
+				if($current_user_disliked == 'disliked' && $liked_value == 'noliked' || vortex_ra_read_cookie('likecom',$post_id) == 'found' && vortex_ra_read_cookie('dislikecom',$post_id) == 'notfound'){
 					
 					$current_likes = get_comment_meta($post_id,$likes,true);
 					$current_likes--;
@@ -190,7 +194,7 @@ if($vortex_like_dislike['v-switch-comments']){
 					echo json_encode($response);
 					exit();
 					
-				}elseif($current_user_disliked == 'disliked'){
+				}elseif($current_user_disliked == 'disliked' || vortex_ra_read_cookie('dislikecom',$post_id) == 'notfound'){
 					//he likes the post add +1 to likes
 					//change the liked value so when he clicks again we can undo his vote
 					$current_dislikes = get_comment_meta($post_id,$dislikes,true);
@@ -199,7 +203,7 @@ if($vortex_like_dislike['v-switch-comments']){
 					
 					update_comment_meta($post_id,$user_key,$user_data_new);
 					do_action("vortex_com_dislike",'nothing','+dislikes',$current_user_id,$post_id);
-				}elseif($current_user_disliked == 'nodisliked'){
+				}elseif($current_user_disliked == 'nodisliked' || vortex_ra_read_cookie('dislikecom',$post_id) == 'found'){
 					//he doesn't like the post anymore let's undo his vote and change his meta so we can add his vote back 
 					//if he changes his mind
 					$current_dislikes = get_comment_meta($post_id,$dislikes,true);
@@ -246,13 +250,13 @@ if($vortex_like_dislike['v-switch-comments']){
 					if(!get_comment_meta(get_comment_ID(),$user_key,true) == ''){
 						$current_user = get_comment_meta(get_comment_ID(),$user_key,true);
 						$current_user_disliked = $current_user['disliked'];
-							
+					}	
 						if($current_user_disliked == 'nodisliked'){
 							return 'vortex-p-dislike-active-comment';
-						}else{
-							return'';	
+						}elseif(vortex_ra_read_cookie('dislikecom',$id) == 'found' && $current_user_disliked !== 'disliked'){
+							return'vortex-p-dislike-active-comment';	
 						}
-					}
+					
 				}	
 		}
 
@@ -270,11 +274,12 @@ if($vortex_like_dislike['v-switch-comments']){
 					if(!get_comment_meta(get_comment_ID(),$user_key,true) == ''){
 						$current_user = get_comment_meta(get_comment_ID(),$user_key,true);
 						$current_user_liked = $current_user['liked'];
-				
+					}
 						if($current_user_liked == 'noliked'){
 							return 'vortex-p-like-active-comment';
+						}elseif(vortex_ra_read_cookie('likecom',$id) == 'found' && $current_user_liked !== 'liked'){
+							return 'vortex-p-like-active-comment';
 						}
-					}
 				}
 
 		}
@@ -508,41 +513,20 @@ if($vortex_like_dislike['v-switch-comments']){
 	function vortex_system_styles_scripts_comments(){
 		global $vortex_like_dislike;
 			
-			if(is_user_logged_in()){
+			if(is_user_logged_in() || $vortex_like_dislike['v-switch-anon-comment']){
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_style( 'vortex_like_or_dislike_comment', plugin_dir_url( __FILE__ ).'assets/css/style.css' );
 				if(!$vortex_like_dislike['v-switch-dislike-comment']){
-					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_enqueue_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array('jquery'), '1.0',true);
+					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array(), '1.0',true);
+					wp_enqueue_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array(), '1.0',true);
 					wp_localize_script( 'vortex_like_or_dislike_comment_js', 'vortex_ajax_comment', array(
 						'url' => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'ajax-nonce' )
 						)
 					);
 				}else{
-					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_enqueue_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array('jquery'), '1.0',true);
-					wp_localize_script( 'vortex_no_dislike_js_comment', 'vortex_ajax_comment', array(
-						'url' => admin_url( 'admin-ajax.php' ),
-						'nonce' => wp_create_nonce( 'ajax-nonce' ),
-						'color' => esc_js($vortex_like_dislike['v_default_color_comment'])
-						)
-					);
-				}
-			}elseif($vortex_like_dislike['v-switch-anon-comment']){
-				wp_enqueue_style( 'vortex_like_or_dislike_comment', plugin_dir_url( __FILE__ ).'assets/css/style.css' );
-				wp_enqueue_script( 'jquery' );
-				if(!$vortex_like_dislike['v-switch-dislike-comment']){
-					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_enqueue_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array('jquery'), '1.0',true);
-					wp_localize_script( 'vortex_like_or_dislike_comment_js', 'vortex_ajax_comment', array(
-						'url' => admin_url( 'admin-ajax.php' ),
-						'nonce' => wp_create_nonce( 'ajax-nonce' )
-						)
-					);
-				}else{
-					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_enqueue_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array('jquery'), '1.0',true);
+					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array(), '1.0',true);
+					wp_enqueue_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array(), '1.0',true);
 					wp_localize_script( 'vortex_no_dislike_js_comment', 'vortex_ajax_comment', array(
 						'url' => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'ajax-nonce' ),
@@ -552,6 +536,13 @@ if($vortex_like_dislike['v-switch-comments']){
 				}
 			}elseif(!$vortex_like_dislike['v-switch-anon-comment'] && !is_user_logged_in()){
 				wp_enqueue_style( 'vortex_like_or_dislike_comment', plugin_dir_url( __FILE__ ).'assets/css/style.css' );
+				wp_enqueue_script( 'jquery' );
+				wp_enqueue_script( 'vortex_login_comment_js', plugin_dir_url( __FILE__ ).'assets/js/login-comments.js', array(), '1.0',true);
+				wp_localize_script( 'vortex_login_comment_js', 'vortex_login_comment', array(
+					'text' => $vortex_like_dislike['v-login-text'],
+					)
+				);
+				
 			}
 	}
 	add_action('wp_enqueue_scripts','vortex_system_styles_scripts_comments');
@@ -578,8 +569,8 @@ if($vortex_like_dislike['v-switch-comments']){
 		
 		if(is_user_logged_in()){
 				if(!$vortex_like_dislike['v-switch-dislike-comment']){
-					wp_register_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_register_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array('jquery'), '1.0',true);
+					wp_register_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array(), '1.0',true);
+					wp_register_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array(), '1.0',true);
 					wp_localize_script( 'vortex_like_or_dislike_comment_js', 'vortex_ajax_comment', array(
 						'url' => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'ajax-nonce' )
@@ -597,8 +588,8 @@ if($vortex_like_dislike['v-switch-comments']){
 							return $handles;
 						}
 				}else{
-					wp_register_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_register_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array('jquery'), '1.0',true);
+					wp_register_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array(), '1.0',true);
+					wp_register_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array(), '1.0',true);
 					wp_localize_script( 'vortex_no_dislike_js_comment', 'vortex_ajax_comment', array(
 						'url' => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'ajax-nonce' ),
@@ -619,8 +610,8 @@ if($vortex_like_dislike['v-switch-comments']){
 				}
 			}elseif($vortex_like_dislike['v-switch-anon-comment']){
 				if(!$vortex_like_dislike['v-switch-dislike-comment']){
-					wp_register_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_register_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array('jquery'), '1.0',true);
+					wp_register_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array(), '1.0',true);
+					wp_register_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array(), '1.0',true);
 					wp_localize_script( 'vortex_like_or_dislike_comment_js', 'vortex_ajax_comment', array(
 						'url' => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'ajax-nonce' )
@@ -638,8 +629,8 @@ if($vortex_like_dislike['v-switch-comments']){
 							return $handles;
 						}
 				}else{
-					wp_register_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_register_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array('jquery'), '1.0',true);
+					wp_register_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array(), '1.0',true);
+					wp_register_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array(), '1.0',true);
 					wp_localize_script( 'vortex_no_dislike_js_comment', 'vortex_ajax_comment', array(
 						'url' => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'ajax-nonce' ),
@@ -658,6 +649,25 @@ if($vortex_like_dislike['v-switch-comments']){
 							return $handles;
 						}
 				}
+			}elseif(!$vortex_like_dislike['v-switch-anon-comment'] && !is_user_logged_in()){
+				wp_enqueue_script( 'vortex_login_comment_js', plugin_dir_url( __FILE__ ).'assets/js/login-comments.js', array(), '1.0',true);
+				wp_localize_script( 'vortex_login_comment_js', 'vortex_login_comment', array(
+					'text' => $vortex_like_dislike['v-login-text'],
+					)
+				);
+				
+				add_filter( 'epoch_iframe_scripts', 'vortex_iframe_scripts_5');
+						function vortex_iframe_scripts_5($handles){
+							$my_script_handles  = array( 'vortex_login_comment_js' );
+							if ( ! empty( $handles ) && is_array( $handles ) ) {
+								$handles = array_merge( $handles, $my_script_handles );
+							}else{
+								$handles = $my_script_handles;
+							}
+
+							return $handles;
+						}
+				
 			}
 	}elseif($vortex_like_dislike['v_enable_epoch']){
 		//Epoch support
@@ -683,41 +693,20 @@ if($vortex_like_dislike['v-switch-comments']){
 	function vortex_system_styles_scripts_comments(){
 		global $vortex_like_dislike;
 			
-			if(is_user_logged_in()){
+			if(is_user_logged_in() || $vortex_like_dislike['v-switch-anon-comment']){
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_style( 'vortex_like_or_dislike_comment', plugin_dir_url( __FILE__ ).'assets/css/style.css' );
 				if(!$vortex_like_dislike['v-switch-dislike-comment']){
-					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_enqueue_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array('jquery'), '1.0',true);
+					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array(), '1.0',true);
+					wp_enqueue_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array(), '1.0',true);
 					wp_localize_script( 'vortex_like_or_dislike_comment_js', 'vortex_ajax_comment', array(
 						'url' => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'ajax-nonce' )
 						)
 					);
 				}else{
-					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_enqueue_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array('jquery'), '1.0',true);
-					wp_localize_script( 'vortex_no_dislike_js_comment', 'vortex_ajax_comment', array(
-						'url' => admin_url( 'admin-ajax.php' ),
-						'nonce' => wp_create_nonce( 'ajax-nonce' ),
-						'color' => esc_js($vortex_like_dislike['v_default_color_comment'])
-						)
-					);
-				}
-			}elseif($vortex_like_dislike['v-switch-anon-comment']){
-				wp_enqueue_style( 'vortex_like_or_dislike_comment', plugin_dir_url( __FILE__ ).'assets/css/style.css' );
-				wp_enqueue_script( 'jquery' );
-				if(!$vortex_like_dislike['v-switch-dislike-comment']){
-					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_enqueue_script( 'vortex_like_or_dislike_comment_js', plugin_dir_url( __FILE__ ).'assets/js/like-or-dislike-comments.js', array('jquery'), '1.0',true);
-					wp_localize_script( 'vortex_like_or_dislike_comment_js', 'vortex_ajax_comment', array(
-						'url' => admin_url( 'admin-ajax.php' ),
-						'nonce' => wp_create_nonce( 'ajax-nonce' )
-						)
-					);
-				}else{
-					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array('jquery'), '1.0',true);
-					wp_enqueue_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array('jquery'), '1.0',true);
+					wp_enqueue_script( 'vortex_touchevents', plugin_dir_url( __FILE__ ).'assets/js/toucheventsdetect.js', array(), '1.0',true);
+					wp_enqueue_script( 'vortex_no_dislike_js_comment', plugin_dir_url( __FILE__ ).'assets/js/no-dislike-comments.js', array(), '1.0',true);
 					wp_localize_script( 'vortex_no_dislike_js_comment', 'vortex_ajax_comment', array(
 						'url' => admin_url( 'admin-ajax.php' ),
 						'nonce' => wp_create_nonce( 'ajax-nonce' ),
@@ -727,6 +716,13 @@ if($vortex_like_dislike['v-switch-comments']){
 				}
 			}elseif(!$vortex_like_dislike['v-switch-anon-comment'] && !is_user_logged_in()){
 				wp_enqueue_style( 'vortex_like_or_dislike_comment', plugin_dir_url( __FILE__ ).'assets/css/style.css' );
+				wp_enqueue_script( 'jquery' );
+				wp_enqueue_script( 'vortex_login_comment_js', plugin_dir_url( __FILE__ ).'assets/js/login-comments.js', array(), '1.0',true);
+				wp_localize_script( 'vortex_login_comment_js', 'vortex_login_comment', array(
+					'text' => $vortex_like_dislike['v-login-text'],
+					)
+				);
+				
 			}
 	}
 	add_action('wp_enqueue_scripts','vortex_system_styles_scripts_comments');
@@ -742,10 +738,10 @@ if($vortex_like_dislike['v-switch-comments']){
 				
 				global $vortex_like_dislike;
 				$domain = 'vortex_system_ld';
-				$columns['likes'] = __('Likes',$domain);
+				$columns['likes'] = '<span class="dashicons dashicons-thumbs-up"></span>';
 				
 				if(!$vortex_like_dislike['v-switch-dislike-comment']){
-					$columns['dislikes'] = __('Dislikes',$domain);
+					$columns['dislikes'] = '<span class="dashicons dashicons-thumbs-down"></span>';
 				}
 
 				return $columns;

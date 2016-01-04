@@ -16,7 +16,7 @@
         // This is where your data is stored in the database and also becomes your global variable name.
         'display_name'         => 'Rating System',
         // Name that appears at the top of your panel
-        'display_version'      => '2.7.3',
+        'display_version'      => '2.7.4',
         // Version that appears at the top of your panel
         'menu_type'            => 'menu',
         //Specify if the admin menu should appear or not. Options: menu or submenu (Under appearance only)
@@ -314,7 +314,7 @@
 			'required' => array('v-switch-posts','equals','1'),
 			'title'    => __('Anonymous users', $domain),
 			'subtitle' => __('If you want to allow anonymous users to vote turn this on.',$domain),
-			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice or more because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored so if he changes the IP he can vote again.',$domain),
+			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice or more because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored also a cookie is seted in the browser.If he changes the IP and deletes the cookie he can vote again.',$domain),
 			'default'  => false,
 			),array(
 			'id'       => 'v-switch-anon-counter',
@@ -406,7 +406,7 @@
 			'required' => array('v-switch-posts','equals','1'),
 			'multi'	   => true,
 			'title'    => __('Exclude post types', $domain), 
-			'subtitle' => __('Here you can exclude post types where you DON\'T want the buttons to show. ',$domain),
+			'subtitle' => __('Here you can exclude post types where you DON\'T want the buttons, custom columns and the box to show. ',$domain),
 			'data'	   => 'post_types',
 			),array(
 				'id'       => 'v_start_post_like',
@@ -618,7 +618,7 @@
 			'required' => array('v-switch-comments','equals','1'),
 			'title'    => __('Anonymous users', $domain),
 			'subtitle' => __('If you want to allow anonymous users to vote turn this on.',$domain),
-			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice or more because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored so if he changes the IP he can vote again.',$domain),
+			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice or more because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored also a cookie is seted in the browser.If he changes the IP and deletes the cookie he can vote again.',$domain),
 			'default'  => false,
 			),array(
 			'id'       => 'v-switch-anon-counter-comment',
@@ -695,7 +695,7 @@
 			'required' => array('v-switch-comments','equals','1'),
 			'multi'	   => true,
 			'title'    => __('Exclude categories', $domain), 
-			'subtitle' => __('Here you can exclude categories where you DON\'T want the buttons to show. ',$domain),
+			'subtitle' => __('Here you can exclude post types where you DON\'T want the buttons, custom columns and the box to show. ',$domain),
 			'desc'	   => __('Only categories that have at least 1 post will be shown.',$domain),
 			'data'	   => 'category',
 			),array(
@@ -760,31 +760,7 @@
 			
 			)
 		));
-		Redux::setSection( $opt_name, array(
-        'title'  => __( 'Statistic Dashboard', $domain ),
-        'id'     => 'statistic',
-		'fields' => array(
-				array(
-					'id'       => 'v_button_statistic',
-					'type'     => 'checkbox',
-					'title'    => __('Statistics for:', $domain),
-					'subtitle' => __('The statistics will show up in WordPress Dashboard Widget', $domain), 
-					'desc'     => __('You can check them both if you want.', $domain),
-				 
-					//Must provide key => value pairs for multi checkbox options
-					'options'  => array(
-						'1' => __('Posts',$domain),
-						'2' => __('Comments',$domain),
-					),
-				 
-					//See how default has changed? you also don't need to specify opts that are 0.
-					'default' => array(
-						'1' => '1', 
-						'2' => '0', 
-					)
-				)
-			)
-		));
+
 	    Redux::setSection( $opt_name, array(
         'title'  => __( 'Translation', $domain ),
         'id'     => 'translation',
@@ -805,13 +781,14 @@
 					'subtitle' => __('This appers next to the number of likes in the widget only when the likes is equals to 2 or bigger.', $domain),
 					'validate' => 'text',
 					'default'  => 'likes'
-				),/*array(
-					'id'       => 'v-like-text',
-					'type'     => 'text',
-					'title'    => __('Tooltip like text', $domain),
-					'validate' => 'text',
-					'default'  => 'I like this'
 				),array(
+					'id'       => 'v-login-text',
+					'type'     => 'text',
+					'title'    => __('Require user to login', $domain),
+					'subtitle' => __('This appears when the user is not logged in and the anonymous user voting is not allowed.', $domain),
+					'validate' => 'text',
+					'default'  => 'You must be logged in to vote.'
+				),/*array(
 					'id'       => 'v-like-text-yes',
 					'type'     => 'text',
 					'title'    => __('Tooltip already liked text', $domain),
@@ -832,3 +809,19 @@
 				)*/
 			)
 		));
+		if ( file_exists( dirname( __FILE__ ) . '/../documentation.md' ) ) {
+			$section = array(
+				'icon'   => 'el el-list-alt',
+				'title'  => __( 'Documentation', 'redux-framework-demo' ),
+				'fields' => array(
+					array(
+						'id'       => '17',
+						'type'     => 'raw',
+						'markdown' => true,
+						'content_path' => dirname( __FILE__ ) . '/../documentation.md', // FULL PATH, not relative please
+						//'content' => 'Raw content here',
+					),
+				),
+			);
+			Redux::setSection( $opt_name, $section );
+		}

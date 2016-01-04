@@ -14,13 +14,13 @@
 					if(!get_comment_meta($id,$user_key,true) == ''){
 						$current_user = get_comment_meta($id,$user_key,true);
 						$current_user_disliked = $current_user['disliked'];
-							
+					}		
 						if($current_user_disliked == 'nodisliked'){
 							return 'vortex-p-dislike-active-comment';
-						}else{
-							return'';	
+						}elseif(vortex_ra_read_cookie('dislikecom',$id) == 'found' && $current_user_disliked !== 'disliked'){
+							return'vortex-p-dislike-active-comment';	
 						}
-					}
+					
 				}	
 		}
 
@@ -38,11 +38,13 @@
 					if(!get_comment_meta($id,$user_key,true) == ''){
 						$current_user = get_comment_meta($id,$user_key,true);
 						$current_user_liked = $current_user['liked'];
-				
+					}
 						if($current_user_liked == 'noliked'){
 							return 'vortex-p-like-active-comment';
+						}elseif(vortex_ra_read_cookie('likecom',$id) == 'found' && $current_user_liked !== 'liked'){
+							return 'vortex-p-like-active-comment';
 						}
-					}
+					
 				}
 
 		}

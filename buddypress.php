@@ -14,11 +14,13 @@ function vortex_system_add_dislike_class_buddypress($id){
 					if(!get_post_meta($id,$user_key,true) == ''){
 						$current_user = get_post_meta($id,$user_key,true);
 						$current_user_disliked = $current_user['disliked'];
-							
+					}	
 						if($current_user_disliked == 'nodisliked'){
 							return 'vortex-p-dislike-active';
+						}elseif(vortex_ra_read_cookie('dislikepost',$id) == 'found' && $current_user_disliked !== 'disliked'){
+							return 'vortex-p-dislike-active';
 						}
-					}
+					
 				}
 		}
 
@@ -74,11 +76,13 @@ function vortex_system_add_like_class_buddypress($id){
 					if(!get_post_meta($id,$user_key,true) == ''){
 						$current_user = get_post_meta($id,$user_key,true);
 						$current_user_liked = $current_user['liked'];
-					
+					}
 					if($current_user_liked == 'noliked'){
 							return 'vortex-p-like-active';
-						}
+					}elseif(vortex_ra_read_cookie('likepost',$id) == 'found' && $current_user_liked !== 'liked'){
+							return 'vortex-p-like-active';
 					}
+					
 						
 				}
 		}
