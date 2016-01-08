@@ -823,7 +823,7 @@ if($vortex_like_dislike['v-switch-comments']){
 		$comment_author_url = esc_url($commenter['comment_author_url']);
 
 		$comment_args = array(
-			'order'   => 'ASC',
+			'order'   => 'DESC',
 			'orderby' => 'meta_value_num',
 			'meta_key' => 'vortex_system_likes',
 			'status'  => 'approve',
