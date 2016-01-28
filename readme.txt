@@ -1,5 +1,5 @@
 === Rating System ===
-Contributors: VortexThemes, AlexAlexandru
+Contributors: AlexAlexandru
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
@@ -30,46 +30,46 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 * Check the screenshots tab we have a lot of cool features.
 * If you finds bugs or need support go to the support tab.
 * If you like this plugin consider making a [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S) or Rate us &#9733;&#9733;&#9733;&#9733;&#9733;
-* [Facebook](https://www.facebook.com/VortexThemes) [Twitter](https://twitter.com/VortexThemes) [Github](https://github.com/VortexThemes/rating-system)
+* [Github](https://github.com/AlexAlexandru/rating-system)
 
-> **How to use**
->
+> ###**How to use**
+
 > Use [rating-system-posts counter="yes"] to show  like & dislike for a page, post,bbPress,buddyPress etc (DO NOT USE FOR COMMENTS).
->
+
 > Use [rating-system-posts-disable-dislike counter="yes"] to show only the like button for a page, post,bbPress,buddyPress etc (DO NOT USE FOR COMMENTS).
->
+
 > Use [rating-system-comments] to show like & dislike for comments (USE ONLY FOR STANDARD WORDPRESS COMMENTS).
->
+
 > Use [rating-system-comments-disable-dislike] to show only the like button for commens (USE ONLY FOR STANDARD WORDPRESS COMMENTS).
->
+
 > Use [rating-system-top-posts] to display all posts ordered by their likes.
->
-> Shortcode parameters:
->
+
+> ###Shortcode parameters for [rating-system-top-posts]:
+
 > number = the number of posts to be dislayed (type a number here)(default 5)
->
+
 > display_counter = display the number of likes after the title (type yes or no)(default yes)
->
+
 > display_content = display the content for each post (type yes or no)(default no)
->
+
 > link_to_post = make the title of the post a link to original post (type yes or no)(default yes)
->
+
 > category_slugs = only display posts from certain categories (type categories slugs here)(default empty)
->
-> Example:
->
+
+> ###Example:
+
 > Display top 5 posts: [rating-system-top-posts number="5"]
->
+
 > Display top 5 posts without link to original post: [rating-system-top-posts number="5" link_to_post="no"]
->
+
 > Display top 5 posts from category with slug cats: [rating-system-top-posts number="5" category_slugs="cats"]
->
+
 > Display top 10 posts from multiple categories: [rating-system-top-posts number="10" category_slugs="cats,dogs,planes"]
->
+
 > Display top 10 posts from multiple categories with content and no counter: [rating-system-top-posts display_counter="no" display_content="yes" number="10" category_slugs="cats,dogs,planes"]
->
-> **Translation**
->
+
+> ###**Translation**
+
 > Avaible in Arabic.Translation provided by [dev-ide.net](https://www.dev-ide.net/wordpress/plugins/plugin-rating-system-for-wordpress.html)
 == Installation ==
 
@@ -115,6 +115,7 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 * Added counter args to shortcodes for posts & pages.
 * Fixed fatal error on activating the plugin.
 * Fixed javascript files didn't load in rare cases.
+* Fixed comments not being sorted by the number of likes.(Thanks to Steven Kohlmeyer)
 * Replaced the text in columns with icons.
 * Removed the statistics dashbord widget.
 

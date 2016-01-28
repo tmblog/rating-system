@@ -125,20 +125,10 @@
 
     // SOCIAL ICONS -> Setup custom links in the footer for quick links in your panel footer icons.
     $args['share_icons'][] = array(
-        'url'   => 'https://github.com/VortexThemes/rating-system',
+        'url'   => 'https://github.com/AlexAlexandru/rating-system',
         'title' => 'Visit us on GitHub',
         'icon'  => 'el el-github'
         //'img'   => '', // You can use icon OR img. IMG needs to be a full URL.
-    );
-    $args['share_icons'][] = array(
-        'url'   => 'http://twitter.com/VortexThemes',
-        'title' => 'Follow us on Twitter',
-        'icon'  => 'el el-twitter'
-    );
-	$args['share_icons'][] = array(
-        'url'   => 'http://facebook.com/VortexThemes',
-        'title' => 'Like us on Facebook',
-        'icon'  => 'el el-facebook'
     );
 
     if ( ! isset( $args['global_variable'] ) || $args['global_variable'] !== false ) {

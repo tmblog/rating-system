@@ -1,11 +1,11 @@
 <?php
 /**
 * Plugin Name: Rating System
-* Plugin URI: http://github.com/VortexThemes/rating-system
+* Plugin URI: http://github.com/AlexAlexandru/rating-system
 * Description: The simple way to add like or dislike buttons.
 * Version: 2.7.4
-* Author: VortexThemes
-* Author URI: https://github.com/VortexThemes
+* Author: AlexAlexandru
+* Author URI: https://github.com/AlexAlexandru
 * License: GPL2
 * Text Domain: vortex_system_ld
 * Domain Path: /languages

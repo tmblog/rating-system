@@ -48,4 +48,4 @@
 ![Alt text](/assets/screenshot-12.png?raw=true "WooCommerce support.")
 <hr>
 # Changelog
-You can view the changelog [here](https://github.com/VortexThemes/rating-system/blob/master/Changelog.md)
+You can view the changelog [here](https://github.com/AlexAlexandru/rating-system/blob/master/Changelog.md)
