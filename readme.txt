@@ -3,8 +3,8 @@ Contributors: AlexAlexandru
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
-Tested up to: 4.3.1
-Stable tag: 2.7.4
+Tested up to: 4.4.1
+Stable tag: 2.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,8 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 > **For WordPress post, pages, bbPress  and buddyPress use [rating-system-posts] or [rating-system-posts-disable-dislike].**
 >
 == Changelog ==
+= 2.7.5 =
+* Fixed comments rating errors.
 = 2.7.4 =
 * Added support for cookie tracking.
 * Added documentation in plugin.

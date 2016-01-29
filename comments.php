@@ -13,7 +13,7 @@ if($vortex_like_dislike['v-switch-comments']){
 				if ( ! wp_verify_nonce( $nonce, 'ajax-nonce' ) ){
 					wp_die();
 				}
-				if(!$vortex_like_dislike['v-switch-anon'] && !is_user_logged_in()){
+				if(!$vortex_like_dislike['v-switch-anon-comment'] && !is_user_logged_in()){
 					exit();
 				}
 				$post_id = absint($_POST['post_id']);
@@ -128,7 +128,7 @@ if($vortex_like_dislike['v-switch-comments']){
 				}
 			
 				global $vortex_like_dislike;
-				if(!$vortex_like_dislike['v-switch-anon'] && !is_user_logged_in()){
+				if(!$vortex_like_dislike['v-switch-anon-comment'] && !is_user_logged_in()){
 					exit();
 				}
 				$post_id = absint($_POST['post_id']);
@@ -238,7 +238,7 @@ if($vortex_like_dislike['v-switch-comments']){
 	
 		function vortex_system_add_dislike_class_comment(){
 				global $vortex_like_dislike;
-			
+				$id = get_comment_ID();
 				if(is_user_logged_in()){
 					$current_user_id = get_current_user_id();
 					$user_key = 'vortex_system_user_'.$current_user_id;
@@ -247,7 +247,8 @@ if($vortex_like_dislike['v-switch-comments']){
 					$user_key = 'vortex_system_user_'.$user_ip;
 				};
 				if(is_user_logged_in() || (!is_user_logged_in() && $vortex_like_dislike['v-switch-anon-comment'])){
-					if(!get_comment_meta(get_comment_ID(),$user_key,true) == ''){
+					$current_user_disliked = '';
+					if(!get_comment_meta($id,$user_key,true) == ''){
 						$current_user = get_comment_meta(get_comment_ID(),$user_key,true);
 						$current_user_disliked = $current_user['disliked'];
 					}	
@@ -262,7 +263,7 @@ if($vortex_like_dislike['v-switch-comments']){
 
 		function vortex_system_add_like_class_comment(){
 				global $vortex_like_dislike;
-				
+				$id = get_comment_ID();
 				if(is_user_logged_in()){
 					$current_user_id = get_current_user_id();
 					$user_key = 'vortex_system_user_'.$current_user_id;
@@ -271,7 +272,8 @@ if($vortex_like_dislike['v-switch-comments']){
 					$user_key = 'vortex_system_user_'.$user_ip;
 				};
 				if(is_user_logged_in() || (!is_user_logged_in() && $vortex_like_dislike['v-switch-anon-comment'])){
-					if(!get_comment_meta(get_comment_ID(),$user_key,true) == ''){
+					$current_user_liked = '';
+					if(!get_comment_meta($id,$user_key,true) == ''){
 						$current_user = get_comment_meta(get_comment_ID(),$user_key,true);
 						$current_user_liked = $current_user['liked'];
 					}
