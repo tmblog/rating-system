@@ -1,7 +1,7 @@
 <?php
-global $vortex_like_dislike;
+$vortex_like_dislike = get_option("vortex_like_dislike");
 function vortex_system_add_dislike_class_buddypress($id){
-				global $vortex_like_dislike;
+				$vortex_like_dislike = get_option("vortex_like_dislike");
 			
 				if(is_user_logged_in()){
 					$current_user_id = get_current_user_id();
@@ -37,7 +37,7 @@ function vortex_system_get_total_dislikes_buddypress($id){
 
 function vortex_system_dislike_counter_buddypress($id){
 			
-			global $vortex_like_dislike;
+			$vortex_like_dislike = get_option("vortex_like_dislike");
 			if ($vortex_like_dislike['v_custom_text_post_keep'] && vortex_system_add_dislike_class_buddypress($id) == 'vortex-p-dislike-active'){
 				if(!$vortex_like_dislike['v-switch-anon-counter'] || is_user_logged_in()){
 					return '<span class="vortex-p-dislike-counter '.$id. '">'.$vortex_like_dislike['v_custom_text_post_dislike'].'</span>';
@@ -63,7 +63,7 @@ function vortex_system_render_dislike_button_buddypress($id){
 		}
 
 function vortex_system_add_like_class_buddypress($id){
-				global $vortex_like_dislike;
+				$vortex_like_dislike = get_option("vortex_like_dislike");
 				
 				if(is_user_logged_in()){
 					$current_user_id = get_current_user_id();
@@ -99,7 +99,7 @@ function vortex_system_get_total_likes_buddypress($id){
 		}
 function vortex_system_like_counter_buddypress($id){
 			
-			global $vortex_like_dislike;
+			$vortex_like_dislike = get_option("vortex_like_dislike");
 			if ($vortex_like_dislike['v_custom_text_post_keep'] && vortex_system_add_like_class_buddypress($id) == 'vortex-p-like-active'){
 				if(!$vortex_like_dislike['v-switch-anon-counter'] || is_user_logged_in()){
 					return 	'<span  class="vortex-p-like-counter '. $id.'">'.$vortex_like_dislike['v_custom_text_post_like'].'</span>';
@@ -112,7 +112,7 @@ function vortex_system_like_counter_buddypress($id){
 		}
 
 function vortex_buddypress_render($id){
-	global $vortex_like_dislike;
+	$vortex_like_dislike = get_option("vortex_like_dislike");
 			
 			if(!$vortex_like_dislike['v-switch-dislike']){
 				
@@ -162,7 +162,7 @@ function vortex_buddypress_before($content){
 	return vortex_buddypress_render(bp_get_activity_id()).$content;
 }
 
-global $vortex_like_dislike;
+$vortex_like_dislike = get_option("vortex_like_dislike");
 if($vortex_like_dislike['v_button_visibility'][1] && $vortex_like_dislike['v_button_visibility'][2] ){
 				add_filter('bp_get_activity_content_body','vortex_buddypress_after');
 				add_filter('bp_get_activity_content_body','vortex_buddypress_before');

@@ -3,15 +3,14 @@ Contributors: AlexAlexandru
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S
 Tags: like, dislike, voting, rating, upvote, downvote, ajax, interactive, widget, comments, post, posts, page, widgets, jquery, custom post type, dashbord, bbpress
 Requires at least: 4.1
-Tested up to: 4.4.1
-Stable tag: 2.7.5
+Tested up to: 4.5.3
+Stable tag: 2.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The simple way to add like and dislike buttons for your posts, pages, comments and custom post type.
 
 == Description ==
-* ATTENTION!YOU NEED [REDUX FRAMEWORK](https://wordpress.org/plugins/redux-framework/)(FREE PLUGIN) INSTALLED AND ACTIVATED FOR THIS PLUGIN TO WORK.
 * Support for custom post type(WooCommerce etc). &#10004;
 * Support for bbPress. &#10004;
 * Support for Epoch. &#10004;
@@ -21,12 +20,11 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 * No backlink. &#10004;
 * No ads. &#10004;
 * No external connections to another server. &#10004;
-* Anonymous voting tracked by IP address. &#10004;
+* Anonymous voting tracked by IP address & cookie. &#10004;
 * Option to disable the dislike button. &#10004;
 * Free Widget to show your most liked posts. &#10004;
 * Shortcode [rating-system-posts](You must have turned on like or dislike for posts and pages and if you want you can disable display buttons on). &#10004;
 * Shortcode [rating-system-posts-disable-dislike](Displays only the like button, the above also applies here). &#10004;
-* Sort comments by likes. &#10004;
 * Check the screenshots tab we have a lot of cool features.
 * If you finds bugs or need support go to the support tab.
 * If you like this plugin consider making a [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S) or Rate us &#9733;&#9733;&#9733;&#9733;&#9733;
@@ -78,16 +76,16 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 
 == Screenshots ==
 
-1. Settings for comments
-2. Settings for posts-pages
+1. Settings for posts-pages
+2. Settings for comments
 3. Most liked posts widget
 4. Comment buttons
 5. Custom columns in 'All posts' with likes and dislikes for each post
-6. Basic text to translate
+6. Documentation
 7. Edit box for likes & dislike
 8. Shortcodes
 9. Likes and dislike buttons and the widget on the wordpress site
-10. More options
+10. Translation
 11. bbPress support
 12. WooCommerce support
 
@@ -107,6 +105,11 @@ The simple way to add like and dislike buttons for your posts, pages, comments a
 > **For WordPress post, pages, bbPress  and buddyPress use [rating-system-posts] or [rating-system-posts-disable-dislike].**
 >
 == Changelog ==
+= 2.7.6 =
+* Fixed ip and cookie tracking.
+* Fixed custom text when voting.
+* Removed ReduxFramework.
+* Removed some options.
 = 2.7.5 =
 * Fixed comments rating errors.
 = 2.7.4 =

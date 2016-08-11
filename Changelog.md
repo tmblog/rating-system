@@ -1,3 +1,8 @@
+## [2.7.6]
+### Fixed ip and cookie tracking.
+### Fixed custom text when voting.
+### Removed ReduxFramework.
+### Removed some options.
 ## [2.7.3]
 ### Fixed Custom text being displayed when cancelling vote.
 ### Fixed [rating-system-posts] shortcode only showing the like button.

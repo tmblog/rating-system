@@ -27,7 +27,7 @@ function vortex_rating_system_add_post_meta_boxes() {
 		$post_types['post'] = 'post';
 		$post_types['page'] = 'page';
 		
-		global $vortex_like_dislike;
+		$vortex_like_dislike = get_option("vortex_like_dislike");
 		
 		$array = array();
 	

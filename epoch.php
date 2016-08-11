@@ -1,7 +1,7 @@
 <?php 
 
 		function vortex_system_add_dislike_class_comment_epoch($id){
-				global $vortex_like_dislike;
+				$vortex_like_dislike = get_option("vortex_like_dislike");
 			
 				if(is_user_logged_in()){
 					$current_user_id = get_current_user_id();
@@ -25,7 +25,7 @@
 		}
 
 		function vortex_system_add_like_class_comment_epoch($id){
-				global $vortex_like_dislike;
+				$vortex_like_dislike = get_option("vortex_like_dislike");
 				
 				if(is_user_logged_in()){
 					$current_user_id = get_current_user_id();
@@ -73,7 +73,7 @@
 
 		function vortex_system_dislike_counter_comment_epoch($id){
 			
-			global $vortex_like_dislike;
+			$vortex_like_dislike = get_option("vortex_like_dislike");
 			if ($vortex_like_dislike['v_custom_text_com_keep'] && vortex_system_add_dislike_class_comment_epoch($id) == 'vortex-p-dislike-active-comment'){
 				if(!$vortex_like_dislike['v-switch-anon-counter-comment'] || is_user_logged_in()){
 					return '<span class="vortex-p-dislike-counter-comment '.$id. '">'.$vortex_like_dislike['v_custom_text_com_dislike'].'</span>';
@@ -85,7 +85,7 @@
 
 		function vortex_system_like_counter_comment_epoch($id){
 			
-			global $vortex_like_dislike;
+			$vortex_like_dislike = get_option("vortex_like_dislike");
 			if ($vortex_like_dislike['v_custom_text_com_keep'] && vortex_system_add_like_class_comment_epoch($id) == 'vortex-p-like-active-comment'){
 				if(!$vortex_like_dislike['v-switch-anon-counter-comment'] || is_user_logged_in()){
 					return 	'<span  class="vortex-p-like-counter-comment '.$id.'">'.$vortex_like_dislike['v_custom_text_com_like'].'</span>';
@@ -104,7 +104,7 @@
 
 function vortex_render_for_comments_epoch($id){
 			
-			global $vortex_like_dislike;
+			$vortex_like_dislike = get_option("vortex_like_dislike");
 
 			if(!$vortex_like_dislike['v-switch-dislike-comment']){
 			//leave it inline because wordpress will add <p> tags creating a space I don't know why	

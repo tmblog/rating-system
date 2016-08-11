@@ -1,41 +1,38 @@
 <?php
 
-    if ( ! class_exists( 'Sse' ) ) {
-        return;
-    }
+if ( ! defined( 'ABSPATH' ) ) exit;//exit if accessed directly
 
-    // This is your option name where all the Redux data is stored.
-    $opt_name = "vortex_like_dislike";
-	$dir = plugin_dir_url( __FILE__ );
-	$domain = 'vortex_system_ld';
-	$style = __('Style',$domain);
-	
-    $args = array(
-		"page-title"=>"Rating System",
-		"menu-title"=>"Rating System",
-		"capability"=>'manage_options',
-		"menu-slug"=>$opt_name,
-		"icon"=>"dashicons-admin-generic",
-		"position"=>"81" // set your owm possition
-    );
-	
-	Sse::setArgs($opt_name,$args);
-	
-    // -> START Basic Fields
-    Sse::setSection( $opt_name, array(
+
+$opt_name = 'my_awesome_plugin';
+
+$args = array(
+	"page-title"=>"coolsettings",
+	"menu-title"=>"Cool settings",
+	"capability"=>'manage_options',
+	"menu-slug"=>$opt_name,
+	"icon"=>"dashicons-admin-generic",
+	"position"=>"81" // set your owm possition
+);
+
+Sse::setArgs($opt_name,$args);
+
+$dir = plugin_dir_url( __FILE__ );
+$style = 'Image select alt';
+$domain = 'myplugindomain';
+$tab1 = array(
         'title'  => __( 'Settings for posts and pages', $domain ),
         'id'     => 'basic',
         'desc'   => __( 'Here you can customize the settings only for posts and pages.For comments go to Settings for Comments.', $domain ),
         'fields' => array(
-           array(
+             array(
 			'id'       => 'v-switch-posts',
 			'type'     => 'switch', 
 			'title'    => __('Turn on like or dislike for posts or pages', $domain),
-			'default'  => false,
+			'default'  => true,
 			),array(
 				'id'       => 'v_button_visibility',
 				'type'     => 'checkbox',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Buttons position', $domain), 
 				'subtitle' => __('Where should the buttons appear?', $domain),
 				'desc'     => __('You can check them both if you want.', $domain),
@@ -54,7 +51,7 @@
 			),array(
 				'id'       => 'vortex-button-align',
 				'type'     => 'select',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Buttons alignment',$domain), 
 				'options'  => array(
 					'1' => __('Left',$domain),
@@ -65,7 +62,7 @@
 			),array(
 				'id'       => 'v_button_show',
 				'type'     => 'checkbox',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Display buttons on:', $domain), 
 				'subtitle' => __('Select where the buttons should be displayed.', $domain),
 				'desc'	   =>__('Custom post type single must be checked for bbPress support.Posts Index refers to that page where your post(s) show up with an excerpt and a read more button.',$domain),
@@ -90,7 +87,7 @@
 			),array(
 				'id'       => 'v_button_style',
 				'type'     => 'image_select',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Buttons style', $domain), 
 				'subtitle' => __('Here you can change the icons of the buttons.', $domain),
 				'options'  => array(
@@ -98,7 +95,7 @@
 							'alt'   => ''.$style.' 1', 
 							'img'   => $dir.'images/1.png'
 						),
-						'2'      => array(
+						'da'      => array(
 							'alt'   => ''.$style.' 2', 
 							'img'   => $dir.'images/2.png'
 						),
@@ -155,21 +152,27 @@
 			),array(
 			'id'       => 'v-switch-columns',
 			'type'     => 'switch', 
-			'required' => array('v-switch-posts','equals','1'),
+			'required' => array('v-switch-posts'),
 			'title'    => __('Likes & Dislikes in columns', $domain),
 			'subtitle' => __('Show the number of likes and dislikes at "All Posts" in custom columns.',$domain),
 			'default'  => false,
 			),array(
 			'id'       => 'v-switch-dislike',
 			'type'     => 'switch', 
-			'required' => array('v-switch-posts','equals','1'),
+			'required' => array('v-switch-posts'),
 			'title'    => __('Disable dislike', $domain),
 			'subtitle' => __('Turn on this if you want like button only.',$domain),
 			'default'  => false,
-			),array(
+			)/*,array(
+			'id'       => 'v-switch-tooltip',
+			'type'     => 'switch', 
+			'required' => array('v-switch-posts'),
+			'title'    => __('Enable tooltips', $domain),
+			'default'  => false,
+			)*/,array(
 			'id'       => 'v-switch-anon',
 			'type'     => 'switch',
-			'required' => array('v-switch-posts','equals','1'),
+			'required' => array('v-switch-posts'),
 			'title'    => __('Anonymous users', $domain),
 			'subtitle' => __('If you want to allow anonymous users to vote turn this on.',$domain),
 			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice or more because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored also a cookie is seted in the browser.If he changes the IP and deletes the cookie he can vote again.',$domain),
@@ -177,56 +180,61 @@
 			),array(
 			'id'       => 'v-switch-anon-counter',
 			'type'     => 'switch',
-			'required' => array('v-switch-posts','equals','1'),
+			'required' => array('v-switch-posts'),
 			'title'    => __('Anonymous counter',$domain),
 			'subtitle' => __('Hide the counter(number of likes or dislikes) for anonymous users.',$domain),
 			'default'  => false,
 			),array(
 				'id'          => 'vortex-buttons-size',
 				'type'        => 'number',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'       => __('Buttons size', $domain),
-				'subtitle'    => __('Here you can change the buttons size in pixels(px).', $domain),
-				'default'     => "16",
+				'subtitle'    => __('Here you can change the buttons size in pixels.', $domain),
+				'default'     => "16"
 			),array(
 				'id'       => 'v_default_color',
 				'type'     => 'color',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Default color', $domain), 
 				'subtitle' => __('Default color of buttons', $domain),
+
 				'default'  => '#828384',
 			),array(
 				'id'       => 'v_like_color',
 				'type'     => 'color',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Like button ',$domain),
 				'subtitle' => __('Like button mouse over color', $domain),
+
 				'default'  => '#4898D6',
 			),array(
 				'id'       => 'v_like_active_color',
 				'type'     => 'color',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Like button ', $domain), 
 				'subtitle' => __('Like button active color', $domain),
+
 				'default'  => '#1B7FCC',
 			),array(
 				'id'       => 'v_dislike_color',
 				'type'     => 'color',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Dislike button ', $domain), 
 				'subtitle' => __('Dislike button mouse over color', $domain),
+
 				'default'  => '#0a0101',
 			),array(
 				'id'       => 'v_dislike_active_color',
 				'type'     => 'color',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Dislike button ', $domain), 
 				'subtitle' => __('Dislike button active color', $domain),
+
 				'default'  => '#0a0101',
 			),array(
 			'id'       => 'v_exclude_category',
 			'type'     => 'select',
-			'required' => array('v-switch-posts','equals','1'),
+			'required' => array('v-switch-posts'),
 			'multi'	   => true,
 			'title'    => __('Exclude categories', $domain), 
 			'subtitle' => __('Here you can exclude categories where you DON\'T want the buttons to show. ',$domain),
@@ -235,75 +243,142 @@
 			),array(
 			'id'       => 'v_exclude_post_types-p',
 			'type'     => 'select',
-			'required' => array('v-switch-posts','equals','1'),
+			'required' => array('v-switch-posts'),
 			'multi'	   => true,
 			'title'    => __('Exclude post types', $domain), 
 			'subtitle' => __('Here you can exclude post types where you DON\'T want the buttons, custom columns and the box to show. ',$domain),
 			'data'	   => 'post_types',
 			),array(
+				'id'       => 'v_start_post_like',
+				'type'     => 'number',
+				'required' => array('v-switch-posts'),
+				'title'    => __('Number of likes by default', $domain),
+				'subtitle' => __('Number of likes by default to new post.', $domain),
+				'default'  => '0'
+			),array(
+				'id'       => 'v_start_post_dislike',
+				'type'     => 'number',
+				'required' => array('v-switch-posts'),
+				'title'    => __('Number of dislikes by default', $domain),
+				'subtitle' => __('Number of dislikes by default to new post.', $domain),
+				'default'  => '0'
+			),array(
 				'id'       => 'v_custom_text',
 				'type'     => 'switch', 
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Custom text', $domain),
 				'subtitle' => __('Display custom text when user is voting', $domain),
 				'default'  => false,
 			),array(
 				'id'       => 'v_custom_text_post_like',
 				'type'     => 'text', 
-				'required' => array(array('v-switch-posts','equals','1'),array('v_custom_text','equals','1')),
+
+				'required' => array(array('v-switch-posts'),array('v_custom_text')),
 				'title'    => __('Custom text for like', $domain),
 				'default'  => 'Thank you for voting',
 			),array(
 				'id'       => 'v_custom_text_post_dislike',
 				'type'     => 'text',
-				'required' => array(array('v-switch-posts','equals','1'),array('v_custom_text','equals','1')),
+
+				'required' => array(array('v-switch-posts'),array('v_custom_text')),
 				'title'    => __('Custom text for dislike', $domain),
 				'default'  => 'Thank you for voting',
 			),array(
 				'id'       => 'v_custom_text_post_keep',
 				'type'     => 'switch',
-				'required' => array(array('v-switch-posts','equals','1'),array('v_custom_text','equals','1')),
+				'required' => array(array('v-switch-posts'),array('v_custom_text')),
 				'title'    => __('Keep custom text', $domain),
 				'subtitle' => __('When a user voted and refreshes the page keep showing the custom text for the vote and don\'t display the counter',$domain),
 				'default'  => false,
 			),array(
 				'id'       => 'v_enable_bbpress',
 				'type'     => 'switch',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Enable bbPress support', $domain),
 				'subtitle' => __('Custom post type single must be checked for bbPress support.',$domain),
 				'default'  => false,
 			),array(
 				'id'       => 'v_enable_buddybpress',
 				'type'     => 'switch',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Enable buddyPress support', $domain),
 				'subtitle' => __('Enable support for buddyPress activities.',$domain),
 				'default'  => false,
 			),array(
 				'id'       => 'v_enable_delete',
 				'type'     => 'switch',
-				'required' => array('v-switch-posts','equals','1'),
+				'required' => array('v-switch-posts'),
 				'title'    => __('Enable Auto delete post', $domain),
 				'default'  => false,
 			),array(
 				'id'       => 'v_delete_number',
-				'type'     => 'text',
-				'required' => array(array('v-switch-posts','equals','1'),array('v_enable_delete','equals','1')),
+				'type'     => 'number',
+				'required' => array(array('v-switch-posts'),array('v_enable_delete')),
 				'title'    => __('Number of dislikes:', $domain),
 				'subtitle' => __('Auto delete post at a given number of dislikes', $domain),
 				'default'  => '10'
+			),array(
+				'id'       => 'v_enable_deletesdsd',
+				'type'     => 'switch',
+				'required' => array(array('v-switch-posts'),array('v_enable_delete')),
+				'title'    => __('Enable Auto delete post', $domain),
+				'default'  => false,
+			),array(
+				'id'       => 'v_delete_numbersd',
+				'type'     => 'number',
+				'required' => array(array('v-switch-posts'),array('v_enable_delete'),array('v_enable_deletesdsd')),
+				'title'    => __('Number of dislikes:', $domain),
+				'subtitle' => __('Auto delete post at a given number of dislikes', $domain),
+				'default'  => '10'
+			),array(
+			'id'       => 'v-switch-fdfddf',
+			'type'     => 'switch', 
+			'title'    => __('You see this', $domain),
+			'default'  => false,
+			),array(
+			'id'       => 'numberr',
+			'type'     => 'number', 
+			'title'    => __('You see this', $domain),
+			'default'  => "3",
+			),array(
+			'id'       => 'numberdssdadr',
+			'type'     => 'number', 
+			'title'    => __('You see this', $domain),
+			'default'  => "3",
+			),array(
+			'id'       => 'numberdssdasdfasdfdr',
+			'type'     => 'number', 
+			'title'    => __('You see this', $domain),
+			'default'  => "3",
+			),array(
+			'id'       => 'hEELELEL',
+			'type'     => 'number', 
+			'title'    => __('Hello', $domain),
+			'default'  => "3",
+			),array(
+			'id'       => 'hEELdddd',
+			'type'     => 'number', 
+			'title'    => __('Hello', $domain),
+			'default'  => "9",
+			),array(
+			'id'       => 'asdasdsa',
+			'type'     => 'number', 
+			'title'    => __('Hello', $domain),
+			'default'  => "220",
+			'minim'     => 4,
+			'maxim'		=> 440,
 			)
-			
 		)
-			
-    ) );
+);
+
+Sse::setSection($opt_name,$tab1);
+
+
 	
 		Sse::setSection( $opt_name, array(
         'title'  => __( 'Settings for comments', $domain ),
         'id'     => 'comments',
-        'desc'   => __( 'Here you can customize the settings only for comments.For posts and pages go to Settings for Posts and Pages.', $domain ),
-			'fields' => array(
+		'fields' => array(
 				array(
 					'id'       => 'v-switch-comments',
 					'type'     => 'switch',
@@ -312,7 +387,7 @@
 				),array(
 				'id'       => 'v_button_visibility_comments',
 				'type'     => 'checkbox',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Buttons position', $domain), 
 				'subtitle' => __('Where should the buttons appear?', $domain),
 				'desc'     => __('You can check them both if you want.',$domain),
@@ -331,7 +406,7 @@
 			),array(
 				'id'       => 'vortex-button-align-comment',
 				'type'     => 'select',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Buttons alignment', $domain), 
 				'options'  => array(
 					'1' => __('Left',$domain),
@@ -342,7 +417,7 @@
 			),array(
 				'id'       => 'v_button_style_comment',
 				'type'     => 'image_select',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Buttons style', $domain), 
 				'subtitle' => __('Here you can change the icons of the buttons.',$domain),
 				'options'  => array(
@@ -407,21 +482,28 @@
 			),array(
 			'id'       => 'v-switch-columns-comment',
 			'type'     => 'switch', 
-			'required' => array('v-switch-comments','equals','1'),
+			'required' => array('v-switch-comments'),
 			'title'    => __('Likes & Dislikes in columns', $domain),
 			'subtitle' => __('Show the number of likes and dislikes at "Comments" in custom columns.',$domain),
 			'default'  => false,
 			),array(
+			'id'       => 'v-switch-order-comment',
+			'type'     => 'switch', 
+			'required' => array('v-switch-comments'),
+			'title'    => __('Order comments', $domain),
+			'subtitle' => __('Order comments by the number of likes they have.No Epoch support.',$domain),
+			'default'  => false,
+			),array(
 			'id'       => 'v-switch-dislike-comment',
 			'type'     => 'switch', 
-			'required' => array('v-switch-comments','equals','1'),
+			'required' => array('v-switch-comments'),
 			'title'    => __('Disable dislike', $domain),
 			'subtitle' => __('Turn on this if you want like button only.',$domain),
 			'default'  => false,
 			),array(
 			'id'       => 'v-switch-anon-comment',
 			'type'     => 'switch',
-			'required' => array('v-switch-comments','equals','1'),
+			'required' => array('v-switch-comments'),
 			'title'    => __('Anonymous users', $domain),
 			'subtitle' => __('If you want to allow anonymous users to vote turn this on.',$domain),
 			'desc'	   => __('If you allow anonymous users to like or dislike , results may not be 100% accurate meaning that a person could like or dislike twice or more because it\'s impossible for this plugin to track anonymous users over the internet.The IP of the user is stored also a cookie is seted in the browser.If he changes the IP and deletes the cookie he can vote again.',$domain),
@@ -429,56 +511,49 @@
 			),array(
 			'id'       => 'v-switch-anon-counter-comment',
 			'type'     => 'switch',
-			'required' => array('v-switch-comments','equals','1'),
+			'required' => array('v-switch-comments'),
 			'title'    => __('Anonymous counter', $domain),
 			'subtitle' => __('Hide the counter(number of likes or dislikes) for anonymous users.',$domain),
 			'default'  => false,
 			),array(
-				'id'          => 'vortex-buttons-size-comment',
-				'type'        => 'number',
-				'required' => array('v-switch-comments','equals','1'),
-				'title'       => __('Buttons size', $domain),
-				'subtitle'    => __('Here you can change the buttons size in pixels (px).',$domain),
-				'default'     => "16",
-			),array(
 				'id'       => 'v_default_color_comment',
 				'type'     => 'color',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Default color', $domain), 
 				'subtitle' => __('Default color of buttons', $domain),
 				'default'  => '#828384',
 			),array(
 				'id'       => 'v_like_color_comment',
 				'type'     => 'color',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Like button ', $domain),
 				'subtitle' => __('Like button mouse over color',$domain),
 				'default'  => '#4898D6',
 			),array(
 				'id'       => 'v_like_active_color_comment',
 				'type'     => 'color',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Like button ', $domain), 
 				'subtitle' => __('Like button active color', $domain),
 				'default'  => '#1B7FCC',
 			),array(
 				'id'       => 'v_dislike_color_comment',
 				'type'     => 'color',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Dislike button ', $domain), 
 				'subtitle' => __('Dislike button mouse over color', $domain),
 				'default'  => '#0a0101',
 			),array(
 				'id'       => 'v_dislike_active_color_comment',
 				'type'     => 'color',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Dislike button ', $domain), 
 				'subtitle' => __('Dislike button active color',$domain),
 				'default'  => '#0a0101',
 			),array(
 			'id'       => 'v_exclude_category_comment',
 			'type'     => 'select',
-			'required' => array('v-switch-comments','equals','1'),
+			'required' => array('v-switch-comments'),
 			'multi'	   => true,
 			'title'    => __('Exclude categories', $domain), 
 			'subtitle' => __('Here you can exclude post types where you DON\'T want the buttons, custom columns and the box to show. ',$domain),
@@ -487,41 +562,56 @@
 			),array(
 			'id'       => 'v_exclude_post_types',
 			'type'     => 'select',
-			'required' => array('v-switch-comments','equals','1'),
+			'required' => array('v-switch-comments'),
 			'multi'	   => true,
 			'title'    => __('Exclude post types', $domain), 
 			'subtitle' => __('Here you can exclude post types where you DON\'T want the buttons to show. ',$domain),
 			'data'	   => 'post_types',
 			),array(
+				'id'       => 'v_start_comment_like',
+				'type'     => 'number',
+				'required' => array('v-switch-comments'),
+				'title'    => __('Number of likes by default', $domain),
+				'subtitle' => __('Number of likes by default to new comment.', $domain),
+				'default'  => '0'
+			),array(
+				'id'       => 'v_start_comment_dislike',
+				'type'     => 'number',
+				'required' => array('v-switch-comments'),
+				'title'    => __('Number of dislikes by default', $domain),
+				'subtitle' => __('Number of dislikes by default to new comment.', $domain),
+				'default'  => '0'
+			),array(
 				'id'       => 'v_custom_text_com',
 				'type'     => 'switch', 
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Custom text', $domain),
 				'subtitle' => __('Display custom text when user is voting', $domain),
 				'default'  => false,
 			),array(
 				'id'       => 'v_custom_text_com_like',
 				'type'     => 'text', 
-				'required' => array(array('v-switch-comments','equals','1'),array('v_custom_text_com','equals','1')),
+
+				'required' => array(array('v-switch-comments'),array('v_custom_text_com')),
 				'title'    => __('Custom text for like', $domain),
 				'default'  => 'Thank you for voting',
 			),array(
 				'id'       => 'v_custom_text_com_dislike',
 				'type'     => 'text',
-				'required' => array(array('v-switch-comments','equals','1'),array('v_custom_text_com','equals','1')),
+				'required' => array(array('v-switch-comments'),array('v_custom_text_com')),
 				'title'    => __('Custom text for dislike', $domain),
 				'default'  => 'Thank you for voting',
 			),array(
 				'id'       => 'v_custom_text_com_keep',
 				'type'     => 'switch',
-				'required' => array(array('v-switch-comments','equals','1'),array('v_custom_text_com','equals','1')),
+				'required' => array(array('v-switch-comments'),array('v_custom_text_com')),
 				'title'    => __('Keep custom text', $domain),
 				'subtitle' => __('When a user voted and refreshes the page keep showing the custom text for the vote and don\'t display the counter',$domain),
 				'default'  => false,
 			),array(
 				'id'       => 'v_enable_epoch',
 				'type'     => 'switch',
-				'required' => array('v-switch-comments','equals','1'),
+				'required' => array('v-switch-comments'),
 				'title'    => __('Enable Epoch Support', $domain),
 				'default'  => false,
 			)
@@ -532,7 +622,6 @@
 	    Sse::setSection( $opt_name, array(
         'title'  => __( 'Translation', $domain ),
         'id'     => 'translation',
-        'desc'   => __( 'Here you can translate some basic text.', $domain ),
 			'fields' => array(
 				array(
 					'id'       => 'v-singular-text',
@@ -556,11 +645,22 @@
 			)
 		));
 		
-		if(file_exists(plugin_dir_path(__FILE__).'documentation.html')){
-			Sse::setSection( $opt_name, array(
-			'title'  => __( 'Documentation', $domain ),
-			'id'     => 'documentation',
-			'fields' => array(),
-			'html'   => plugin_dir_path(__FILE__).'documentation.html',
-			));
-		}
+
+$documentation = array(
+        'title'  => __( 'Documentation', $domain ),
+        'id'     => 'documentation',
+        'fields' => array(),//empty fields array must be present if not error
+		'html' => plugin_dir_path(__FILE__).'doc.html',
+);
+Sse::setSection($opt_name,$documentation);		
+
+//donation button
+function my_custom_donate_button(){
+	echo '<a style="display:block;margin:0 auto;width:200px;" href="http://example.com/donate">Click here to donate</a>';
+}
+add_action('sse_footer_'.$opt_name,'my_custom_donate_button');
+//add_action('sse_header_'.$opt_name,'my_custom_donate_button');
+			
+$a = get_option('my_awesome_plugin');
+
+?>
