@@ -12,6 +12,12 @@
 */
 if ( ! defined( 'ABSPATH' ) ) exit;//exit if accessed directly
 
+
+$sse = plugin_dir_path( __FILE__).'admin/framework/autoload.php';
+	if ( file_exists($sse) ) {
+		include($sse);
+	};
+
 function vortex_ra_read_cookie($name,$postid){
 	if(isset($_COOKIE[$name])){
 		$decode = json_decode($_COOKIE[$name]);
@@ -59,13 +65,9 @@ function vortex_systen_main_function(){
 	
 		$vortex_like_dislike = get_option('vortex_like_dislike');
 			load_plugin_textdomain( 'vortex_system_ld', FALSE, basename(plugin_dir_path( __FILE__ )). '/languages' );
-			$sse = plugin_dir_path( __FILE__).'admin/framework/autoload.php';
+			
 			$options = plugin_dir_path( __FILE__).'admin/vortexlikedislike.php';
-		
-				if ( file_exists($sse) ) {
-					include($sse);
-				};
-				
+
 				if ( file_exists($options) ) {
 					include($options);
 				};
