@@ -62,7 +62,7 @@ function vortex_systen_main_function(){
 			$sse = plugin_dir_path( __FILE__).'admin/framework/autoload.php';
 			$options = plugin_dir_path( __FILE__).'admin/vortexlikedislike.php';
 		
-				if ( !class_exists( 'Sse' ) && file_exists($sse) ) {
+				if ( file_exists($sse) ) {
 					include($sse);
 				};
 				
