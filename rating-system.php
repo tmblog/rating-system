@@ -3,7 +3,7 @@
 * Plugin Name: Rating System
 * Plugin URI: http://github.com/AlexAlexandru/rating-system
 * Description: The simple way to add like or dislike buttons.
-* Version: 2.7.6
+* Version: 2.7.6.1
 * Author: AlexAlexandru
 * Author URI: https://github.com/AlexAlexandru
 * License: GPL2
