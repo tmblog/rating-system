@@ -15,6 +15,16 @@
 * If you finds bugs or need support go to the support tab.
 * If you like this plugin consider making a [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VVGFFVJSFVZ7S)
 
+TODO:
+-bug - metabox is almost everywhere
+-bug -  comment tracking ip & cookie not working
+-feature - mycred for both posts and buddypres
+-bug - fix bbpress lead post no buttons
+-maybe- add groups rating?if possible?????
+-bug- bad code needs refactoring
+
+
+
 == Installation ==
 
 1. After you download the plugin go to Plugins -> Add New -> Upload Plugin
