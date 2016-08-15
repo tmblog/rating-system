@@ -12,7 +12,6 @@
 */
 if ( ! defined( 'ABSPATH' ) ) exit;//exit if accessed directly
 
-
 $sse = plugin_dir_path( __FILE__).'admin/framework/autoload.php';
 	if ( file_exists($sse) ) {
 		include($sse);

@@ -2,6 +2,34 @@
 
 $vortex_like_dislike = get_option("vortex_like_dislike");
 
+
+
+if($vortex_like_dislike['v_order_com']){
+	
+	function vortex_com_cmp($a, $b) {
+		
+		if ($a->rating_system == $b->rating_system) {
+				return 0;
+			}
+		return ($a->rating_system > $b->rating_system) ? -1 : 1;
+	
+	}
+	
+	function vortex_com_order($comments){
+		foreach($comments as $comment){
+			$comment->rating_system = get_comment_meta($comment->comment_ID, 'vortex_system_likes', true );
+		}
+		
+		
+		usort($comments, 'vortex_com_cmp');
+		
+		return $comments;
+	}
+	add_filter('comments_array','vortex_com_order');
+}
+
+
+
 if($vortex_like_dislike['v-switch-comments']){
 		add_action( 'wp_ajax_nopriv_vortex_system_comment_like_button', 'vortex_system_comment_like_button' );
 		add_action( 'wp_ajax_vortex_system_comment_like_button', 'vortex_system_comment_like_button' );
@@ -382,7 +410,7 @@ if($vortex_like_dislike['v-switch-comments']){
 		function vortex_system_dislike_counter_comment(){
 			
 			$vortex_like_dislike = get_option("vortex_like_dislike");
-			if ($vortex_like_dislike['v_custom_text_com'] && $vortex_like_dislike['v_custom_text_com_keep'] && vortex_system_add_dislike_class_comment() == 'vortex-p-dislike-active-comment'){
+			if ($vortex_like_dislike['v_custom_text'] && $vortex_like_dislike['v_custom_text_com'] && $vortex_like_dislike['v_custom_text_com_keep'] && vortex_system_add_dislike_class_comment() == 'vortex-p-dislike-active-comment'){
 				if(!$vortex_like_dislike['v-switch-anon-counter-comment'] || is_user_logged_in()){
 					return '<span class="vortex-p-dislike-counter-comment '.get_comment_ID(). '">'.$vortex_like_dislike['v_custom_text_com_dislike'].'</span>';
 				}
@@ -401,7 +429,7 @@ if($vortex_like_dislike['v-switch-comments']){
 			
 			$vortex_like_dislike = get_option("vortex_like_dislike");
 			
-			if ($vortex_like_dislike['v_custom_text_com'] && $vortex_like_dislike['v_custom_text_com_keep'] && vortex_system_add_like_class_comment() == 'vortex-p-like-active-comment'){
+			if ($vortex_like_dislike['v_custom_text'] && $vortex_like_dislike['v_custom_text_com'] && $vortex_like_dislike['v_custom_text_com_keep'] && vortex_system_add_like_class_comment() == 'vortex-p-like-active-comment'){
 				if(!$vortex_like_dislike['v-switch-anon-counter-comment'] || is_user_logged_in()){
 					return 	'<span  class="vortex-p-like-counter-comment '. get_comment_ID().'">'.$vortex_like_dislike['v_custom_text_com_like'].'</span>';
 				}

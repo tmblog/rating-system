@@ -3,6 +3,65 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 
 	if($vortex_like_dislike['v-switch-posts']){
 
+		function vortex_system_bb_check($post_id){
+			global $wpdb;
+			
+			$name = $wpdb->prefix.'bp_activity';
+			$check = $wpdb->get_var($wpdb->prepare("SELECT Count(id) FROM $name WHERE id=%d",$post_id));
+			if($check == '1'){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	
+		function vortex_is_buddypress($post_id){
+			if(function_exists('buddypress')){
+				$buddypress = true;
+			}else{
+				$buddypress = false;
+			}
+			
+			$check = vortex_system_bb_check($post_id);
+			
+			if($buddypress && $check){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	
+		function vortex_add_meta($post_id,$key,$value,$unique){
+			$bbp = vortex_is_buddypress($post_id); 
+				
+			if($bbp){
+				return bp_activity_add_meta($post_id, $key, $value,$unique);
+			}else{
+				return add_post_meta($post_id, $key, $value,$unique);
+			}	
+		}
+		
+		function vortex_get_meta($post_id,$key,$value){
+			$bbp = vortex_is_buddypress($post_id); 
+				
+			if($bbp){
+				return bp_activity_get_meta($post_id, $key, $value);
+			}else{
+				return get_post_meta($post_id, $key, $value);
+			}	
+		}
+		
+		function vortex_update_meta($post_id,$key,$value){
+			$bbp = vortex_is_buddypress($post_id); 
+				
+			if($bbp){
+				return bp_activity_update_meta($post_id, $key, $value);
+			}else{
+				return update_post_meta($post_id, $key, $value);
+			}	
+		}
+		
+	
 		add_action( 'wp_ajax_nopriv_vortex_system_like_button', 'vortex_system_like_button' );
 		add_action( 'wp_ajax_vortex_system_like_button', 'vortex_system_like_button' );
 		function vortex_system_like_button() {
@@ -64,9 +123,9 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				);
 				$shall_we = apply_filters("vortex_one_vote",false);
 				//if this is the first time a user likes this post add the users data to the meta post
-				if(get_post_meta ($post_id,$user_key,true) == ''){
-					add_post_meta($post_id, $user_key, $user_data,true);
-				}elseif($shall_we && !(get_post_meta ($post_id,$user_key,true) == '')){
+				if(vortex_get_meta ($post_id,$user_key,true) == ''){
+					vortex_add_meta($post_id, $user_key, $user_data,true);
+				}elseif($shall_we && !(vortex_get_meta ($post_id,$user_key,true) == '')){
 					$response = array(
 						'likes'	   => "exit",
 					);
@@ -80,7 +139,7 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 					'disliked' => 'disliked',
 				);
 				
-				$current_user = get_post_meta($post_id,$user_key,true);
+				$current_user = vortex_get_meta($post_id,$user_key,true);
 				$disliked_value = $current_user['disliked'];
 				$current_user_liked = $current_user['liked'];
 
@@ -110,21 +169,21 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				
 				//END custom
 				if($current_user_liked == 'liked' && $disliked_value == 'nodisliked'){
-					$current_likes = get_post_meta($post_id,$likes,true);
+					$current_likes = vortex_get_meta($post_id,$likes,true);
 					if(!is_user_logged_in()){
 					$current_likes += $logout_number;
 					}else{
 						$current_likes += $login_number;
 					}
-					update_post_meta($post_id,$likes,$current_likes);
-					$current_dislikes = get_post_meta($post_id,$dislikes,true);
+					vortex_update_meta($post_id,$likes,$current_likes);
+					$current_dislikes = vortex_get_meta($post_id,$dislikes,true);
 					if(!is_user_logged_in()){
 					$current_dislikes -= $logout_number;
 					}else{
 						$current_dislikes -= $login_number;
 					}
-					update_post_meta($post_id,$dislikes,$current_dislikes);
-					update_post_meta($post_id,$user_key,$user_data_new);
+					vortex_update_meta($post_id,$dislikes,$current_dislikes);
+					vortex_update_meta($post_id,$user_key,$user_data_new);
 					do_action("vortex_post_dislike",'+likes','-dislikes',$current_user_id,$post_id);
 					/*
 					$vortex_like_dislike = get_option("vortex_like_dislike");
@@ -163,27 +222,27 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				}elseif($current_user_liked == 'liked'){
 					//he likes the post add +1 to likes
 					//change the liked value so when he clicks again we can undo his vote
-					$current_likes = get_post_meta($post_id,$likes,true);
+					$current_likes = vortex_get_meta($post_id,$likes,true);
 					if(!is_user_logged_in()){
 					$current_likes += $logout_number;
 					}else{
 						$current_likes += $login_number;
 					}
-					update_post_meta($post_id,$likes,$current_likes);
-					update_post_meta($post_id,$user_key,$user_data_new);
+					vortex_update_meta($post_id,$likes,$current_likes);
+					vortex_update_meta($post_id,$user_key,$user_data_new);
 					do_action("vortex_post_dislike",'+likes','nothing',$current_user_id,$post_id);
 					
 				}elseif($current_user_liked == 'noliked' ){
 					//he doesn't like the post anymore let's undo his vote and change his meta so we can add his vote back 
 					//if he changes his mind
-					$current_likes = get_post_meta($post_id,$likes,true);
+					$current_likes = vortex_get_meta($post_id,$likes,true);
 					if(!is_user_logged_in()){
 					$current_likes -= $logout_number;
 					}else{
 						$current_likes -= $login_number;
 					}
-					update_post_meta($post_id,$likes,$current_likes);
-					update_post_meta($post_id,$user_key,$user_data);
+					vortex_update_meta($post_id,$likes,$current_likes);
+					vortex_update_meta($post_id,$user_key,$user_data);
 					do_action("vortex_post_dislike",'-likes','nothing',$current_user_id,$post_id);
 					
 						$response = array(
@@ -280,9 +339,9 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				);
 				
 				$shall_we = apply_filters("vortex_one_vote",false);
-				if(get_post_meta ($post_id,$user_key,true) == ''){
-					add_post_meta($post_id, $user_key, $user_data,true);
-				}elseif($shall_we && !(get_post_meta ($post_id,$user_key,true) == '')){
+				if(vortex_get_meta ($post_id,$user_key,true) == ''){
+					vortex_add_meta($post_id, $user_key, $user_data,true);
+				}elseif($shall_we && !(vortex_get_meta ($post_id,$user_key,true) == '')){
 					$response = array(
 						'dislikes'	   => "exit",
 					);
@@ -299,7 +358,7 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				$singular = sanitize_text_field($vortex_like_dislike['v-singular-text']);
 				$plural = sanitize_text_field($vortex_like_dislike['v-plural-text']);
 				
-				$current_user = get_post_meta($post_id,$user_key,true);
+				$current_user = vortex_get_meta($post_id,$user_key,true);
 				$current_user_disliked = $current_user['disliked'];
 				$liked_value = $current_user['liked'];
 				//custom
@@ -330,23 +389,23 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 					
 				if($current_user_disliked == 'disliked' && $liked_value == 'noliked'){
 					
-					$current_likes = get_post_meta($post_id,$likes,true);
+					$current_likes = vortex_get_meta($post_id,$likes,true);
 					if(!is_user_logged_in()){
 					$current_likes -= $logout_number;
 					}else{
 						$current_likes -= $login_number;
 					}
-					update_post_meta($post_id,$likes,$current_likes);
+					vortex_update_meta($post_id,$likes,$current_likes);
 					
-					$current_dislikes = get_post_meta($post_id,$dislikes,true);
+					$current_dislikes = vortex_get_meta($post_id,$dislikes,true);
 					if(!is_user_logged_in()){
 					$current_dislikes += $logout_number;
 					}else{
 						$current_dislikes += $login_number;
 					}
-					update_post_meta($post_id,$dislikes,$current_dislikes);
+					vortex_update_meta($post_id,$dislikes,$current_dislikes);
 					
-					update_post_meta($post_id,$user_key,$user_data_new);
+					vortex_update_meta($post_id,$user_key,$user_data_new);
 					do_action("vortex_post_dislike",'-likes','+dislikes',$current_user_id,$post_id);
 					if ($vortex_like_dislike['v_custom_text']){
 						$current_dislikes = $vortex_like_dislike['v_custom_text_post_dislike'];
@@ -374,15 +433,15 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				}elseif($current_user_disliked == 'disliked'){
 					//he likes the post add +1 to likes
 					//change the liked value so when he clicks again we can undo his vote
-					$current_dislikes = get_post_meta($post_id,$dislikes,true);
+					$current_dislikes = vortex_get_meta($post_id,$dislikes,true);
 					if(!is_user_logged_in()){
 					$current_dislikes += $logout_number;
 					}else{
 						$current_dislikes += $login_number;
 					}
-					update_post_meta($post_id,$dislikes,$current_dislikes);
+					vortex_update_meta($post_id,$dislikes,$current_dislikes);
 					
-					update_post_meta($post_id,$user_key,$user_data_new);
+					vortex_update_meta($post_id,$user_key,$user_data_new);
 					do_action("vortex_post_dislike",'nothing','+dislikes',$current_user_id,$post_id);
 					if($vortex_like_dislike['v_enable_delete'] && ($current_dislikes >= $vortex_like_dislike['v_delete_number'])){
 						wp_delete_post($post_id,true);
@@ -391,15 +450,15 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				}elseif($current_user_disliked == 'nodisliked'){
 					//he doesn't like the post anymore let's undo his vote and change his meta so we can add his vote back 
 					//if he changes his mind
-					$current_dislikes = get_post_meta($post_id,$dislikes,true);
+					$current_dislikes = vortex_get_meta($post_id,$dislikes,true);
 					if(!is_user_logged_in()){
 					$current_dislikes -= $logout_number;
 					}else{
 						$current_dislikes -= $login_number;
 					}
-					update_post_meta($post_id,$dislikes,$current_dislikes);
+					vortex_update_meta($post_id,$dislikes,$current_dislikes);
 					do_action("vortex_post_dislike",'nothing','-dislikes',$current_user_id,$post_id);
-					update_post_meta($post_id,$user_key,$user_data);
+					vortex_update_meta($post_id,$user_key,$user_data);
 
 						$response = array(
 							'dislikes' => $current_dislikes,
@@ -455,8 +514,8 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				};
 				if(is_user_logged_in() || (!is_user_logged_in() && $vortex_like_dislike['v-switch-anon'])){
 					$current_user_disliked = '';
-					if(!get_post_meta($id,$user_key,true) == ''){
-						$current_user = get_post_meta($id,$user_key,true);
+					if(!vortex_get_meta($id,$user_key,true) == ''){
+						$current_user = vortex_get_meta($id,$user_key,true);
 						$current_user_disliked = $current_user['disliked'];
 					}		
 					
@@ -488,8 +547,8 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 				};
 				if(is_user_logged_in() || (!is_user_logged_in() && $vortex_like_dislike['v-switch-anon'])){
 					$current_user_liked = '';
-					if(!get_post_meta($id,$user_key,true) == ''){
-						$current_user = get_post_meta($id,$user_key,true);
+					if(!vortex_get_meta($id,$user_key,true) == ''){
+						$current_user = vortex_get_meta($id,$user_key,true);
 						$current_user_liked = $current_user['liked'];
 					}
 					if($current_user_liked == 'noliked'){
@@ -512,12 +571,12 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 			}else {
 				$id = get_the_ID();
 			}
-				$likes = get_post_meta($id,'vortex_system_likes',true);
+				$likes = vortex_get_meta($id,'vortex_system_likes',true);
 			
 				if(empty($likes)){
 					return 0;
 				}elseif(!$likes == ''){
-				 return $dislikes = get_post_meta($id,'vortex_system_likes',true);
+				 return $dislikes = vortex_get_meta($id,'vortex_system_likes',true);
 				}
 		}
 
@@ -531,12 +590,12 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 			}else {
 				$id = get_the_ID();
 			}
-				$dislikes = get_post_meta($id,'vortex_system_dislikes',true);
+				$dislikes = vortex_get_meta($id,'vortex_system_dislikes',true);
 			
 				if(empty($dislikes)){
 					return 0;
 				}elseif(!$dislikes == ''){
-				 return $dislikes = get_post_meta($id,'vortex_system_dislikes',true);
+				 return $dislikes = vortex_get_meta($id,'vortex_system_dislikes',true);
 				}
 		}
 		
@@ -745,7 +804,7 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 
 					case 'likes' :
 
-						$likes = get_post_meta( $post_id, 'vortex_system_likes', true );
+						$likes = vortex_get_meta( $post_id, 'vortex_system_likes', true );
 
 						if ( empty( $likes ) )
 							echo '0';
@@ -758,7 +817,7 @@ $vortex_like_dislike = get_option("vortex_like_dislike");
 		
 					case 'dislikes' :
 
-						$dislikes = get_post_meta( $post_id, 'vortex_system_dislikes', true );
+						$dislikes = vortex_get_meta( $post_id, 'vortex_system_dislikes', true );
 
 						if ( empty( $dislikes ) )
 							echo '0';

@@ -11,8 +11,8 @@ function vortex_system_add_dislike_class_buddypress($id){
 					$user_key = 'vortex_system_user_'.$user_ip;
 				};
 				if(is_user_logged_in() || (!is_user_logged_in() && $vortex_like_dislike['v-switch-anon'])){
-					if(!get_post_meta($id,$user_key,true) == ''){
-						$current_user = get_post_meta($id,$user_key,true);
+					if(!vortex_get_meta($id,$user_key,true) == ''){
+						$current_user = vortex_get_meta($id,$user_key,true);
 						$current_user_disliked = $current_user['disliked'];
 					}	
 						if($current_user_disliked == 'nodisliked'){
@@ -26,19 +26,19 @@ function vortex_system_add_dislike_class_buddypress($id){
 
 function vortex_system_get_total_dislikes_buddypress($id){
 			
-				$dislikes = get_post_meta($id,'vortex_system_dislikes',true);
+				$dislikes = vortex_get_meta($id,'vortex_system_dislikes',true);
 			
 				if(empty($dislikes)){
 					return 0;
 				}elseif(!$dislikes == ''){
-				 return $dislikes = get_post_meta($id,'vortex_system_dislikes',true);
+				 return $dislikes = vortex_get_meta($id,'vortex_system_dislikes',true);
 				}
 		}
 
 function vortex_system_dislike_counter_buddypress($id){
 			
 			$vortex_like_dislike = get_option("vortex_like_dislike");
-			if ($vortex_like_dislike['v_custom_text_post_keep'] && vortex_system_add_dislike_class_buddypress($id) == 'vortex-p-dislike-active'){
+			if ($vortex_like_dislike['v_custom_text'] && $vortex_like_dislike['v_custom_text_post_keep'] && vortex_system_add_dislike_class_buddypress($id) == 'vortex-p-dislike-active'){
 				if(!$vortex_like_dislike['v-switch-anon-counter'] || is_user_logged_in()){
 					return '<span class="vortex-p-dislike-counter '.$id. '">'.$vortex_like_dislike['v_custom_text_post_dislike'].'</span>';
 				}
@@ -73,8 +73,8 @@ function vortex_system_add_like_class_buddypress($id){
 					$user_key = 'vortex_system_user_'.$user_ip;
 				};
 				if(is_user_logged_in() || (!is_user_logged_in() && $vortex_like_dislike['v-switch-anon'])){
-					if(!get_post_meta($id,$user_key,true) == ''){
-						$current_user = get_post_meta($id,$user_key,true);
+					if(!vortex_get_meta($id,$user_key,true) == ''){
+						$current_user = vortex_get_meta($id,$user_key,true);
 						$current_user_liked = $current_user['liked'];
 					}
 					if($current_user_liked == 'noliked'){
@@ -89,18 +89,18 @@ function vortex_system_add_like_class_buddypress($id){
 
 function vortex_system_get_total_likes_buddypress($id){
 			
-				$likes = get_post_meta($id,'vortex_system_likes',true);
+				$likes = vortex_get_meta($id,'vortex_system_likes',true);
 			
 				if(empty($likes)){
 					return 0;
 				}elseif(!$likes == ''){
-				 return $dislikes = get_post_meta($id,'vortex_system_likes',true);
+				 return $dislikes = vortex_get_meta($id,'vortex_system_likes',true);
 				}
 		}
 function vortex_system_like_counter_buddypress($id){
 			
 			$vortex_like_dislike = get_option("vortex_like_dislike");
-			if ($vortex_like_dislike['v_custom_text_post_keep'] && vortex_system_add_like_class_buddypress($id) == 'vortex-p-like-active'){
+			if ($vortex_like_dislike['v_custom_text'] && $vortex_like_dislike['v_custom_text_post_keep'] && vortex_system_add_like_class_buddypress($id) == 'vortex-p-like-active'){
 				if(!$vortex_like_dislike['v-switch-anon-counter'] || is_user_logged_in()){
 					return 	'<span  class="vortex-p-like-counter '. $id.'">'.$vortex_like_dislike['v_custom_text_post_like'].'</span>';
 				}

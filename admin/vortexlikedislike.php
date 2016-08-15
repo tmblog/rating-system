@@ -493,6 +493,13 @@
 			'subtitle' => __('Here you can exclude post types where you DON\'T want the buttons to show. ',$domain),
 			'data'	   => 'post_types',
 			),array(
+				'id'       => 'v_order_com',
+				'type'     => 'switch', 
+				'required' => array('v-switch-comments','equals','1'),
+				'title'    => __('Order comments by like', $domain),
+				'subtitle' => __('The comments are first order by ASC or DESC accoring to Settings->Discussion and ordered again by likes', $domain),
+				'default'  => false,
+			),array(
 				'id'       => 'v_custom_text_com',
 				'type'     => 'switch', 
 				'required' => array('v-switch-comments','equals','1'),
